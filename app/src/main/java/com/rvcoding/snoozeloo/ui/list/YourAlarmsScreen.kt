@@ -1,6 +1,5 @@
 package com.rvcoding.snoozeloo.ui.list
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +24,7 @@ import com.rvcoding.snoozeloo.ui.theme.Primary
 import com.rvcoding.snoozeloo.ui.theme.PrimaryDark
 import com.rvcoding.snoozeloo.ui.theme.TextPrimary
 import com.rvcoding.snoozeloo.ui.theme.TextPrimaryDark
+import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 
 
 @Composable
@@ -56,7 +56,7 @@ fun YourAlarmsEmptyScreen() {
                 modifier = Modifier.padding(bottom = 16.dp),
                 imageVector = ImageVector.vectorResource(id = R.drawable.alarm_blue),
                 contentDescription = "Alarm blue",
-                tint = if (isSystemInDarkTheme()) PrimaryDark else Primary
+                tint = if (isDarkTheme()) PrimaryDark else Primary
             )
             Text(
                 modifier = Modifier.padding(16.dp),
@@ -64,7 +64,7 @@ fun YourAlarmsEmptyScreen() {
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center,
-                color = if (isSystemInDarkTheme()) TextPrimaryDark else TextPrimary,
+                color = if (isDarkTheme()) TextPrimaryDark else TextPrimary,
             )
         }
     }

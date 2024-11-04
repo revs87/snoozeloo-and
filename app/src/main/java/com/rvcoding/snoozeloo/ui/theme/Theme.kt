@@ -36,7 +36,7 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun SnoozelooTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = isDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
@@ -57,3 +57,6 @@ fun SnoozelooTheme(
         content = content
     )
 }
+
+@Composable
+fun isDarkTheme(): Boolean = isSystemInDarkTheme()

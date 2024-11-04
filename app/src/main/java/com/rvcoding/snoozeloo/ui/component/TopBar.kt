@@ -1,6 +1,5 @@
 package com.rvcoding.snoozeloo.ui.component
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,6 +29,7 @@ import com.rvcoding.snoozeloo.ui.theme.Primary
 import com.rvcoding.snoozeloo.ui.theme.PrimaryDark
 import com.rvcoding.snoozeloo.ui.theme.TextPrimary
 import com.rvcoding.snoozeloo.ui.theme.TextPrimaryDark
+import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 
 
 @Composable
@@ -81,7 +81,7 @@ sealed interface TopBar {
         companion object {
             @Composable
             fun Default() = Title(
-                isDarkTheme = isSystemInDarkTheme(),
+                isDarkTheme = isDarkTheme(),
                 titleRes = R.string.alarm_list_title,
             )
         }
