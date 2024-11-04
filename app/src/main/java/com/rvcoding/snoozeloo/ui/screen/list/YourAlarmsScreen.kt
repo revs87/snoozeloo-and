@@ -1,11 +1,15 @@
-package com.rvcoding.snoozeloo.ui.list
+package com.rvcoding.snoozeloo.ui.screen.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,7 +45,7 @@ fun YourAlarmsScreen(state: YourAlarmsState) {
         if (state.alarms.isEmpty()) {
             YourAlarmsEmptyScreen()
         } else {
-            YourAlarmsNonEmptyScreen()
+            YourAlarmsNonEmptyScreen(state.alarms)
         }
 
         AddAlarmButton(modifier = Modifier.align(Alignment.BottomCenter))
@@ -49,27 +53,30 @@ fun YourAlarmsScreen(state: YourAlarmsState) {
 }
 
 @Composable
-fun YourAlarmsNonEmptyScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        TopBar(item = TopBar.Title.Default())
-
-        AlarmCard(AlarmInfo.Stub)
-        AlarmCard(AlarmInfo.Stub)
-        AlarmCard(AlarmInfo.Stub)
+fun YourAlarmsNonEmptyScreen(alarms: List<AlarmInfo>) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        TopBar(item = TopBar.Title.alarmList())
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            itemsIndexed(
+                items = alarms,
+                key = { index, _ -> index }
+            ) { _, item ->
+                AlarmCard(item)
+            }
+            item {
+                Spacer(modifier = Modifier.height(48.dp))
+            }
+        }
     }
 }
 
 @Composable
 fun YourAlarmsEmptyScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        TopBar(item = TopBar.Title.Default())
+    Column(modifier = Modifier.fillMaxSize()) {
+        TopBar(item = TopBar.Title.alarmList())
         Column(
             modifier = Modifier.fillMaxWidth().weight(1f),
             verticalArrangement = Arrangement.Center,

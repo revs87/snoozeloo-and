@@ -16,8 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
-import com.rvcoding.snoozeloo.ui.list.YourAlarmsScreen
-import com.rvcoding.snoozeloo.ui.list.YourAlarmsState
+import com.rvcoding.snoozeloo.ui.screen.list.YourAlarmsScreen
+import com.rvcoding.snoozeloo.ui.screen.list.YourAlarmsState
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurface
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurfaceDark
 import com.rvcoding.snoozeloo.ui.theme.SnoozelooTheme

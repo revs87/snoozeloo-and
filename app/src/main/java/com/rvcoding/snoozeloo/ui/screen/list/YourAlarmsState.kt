@@ -1,4 +1,4 @@
-package com.rvcoding.snoozeloo.ui.list
+package com.rvcoding.snoozeloo.ui.screen.list
 
 import androidx.compose.runtime.Immutable
 import com.rvcoding.snoozeloo.model.AlarmInfo
@@ -10,6 +10,12 @@ data class YourAlarmsState(
 ) {
     companion object {
         val Empty: YourAlarmsState = YourAlarmsState(emptyList())
-        val NonEmpty: YourAlarmsState = YourAlarmsState(listOf(AlarmInfo.Stub))
+        val NonEmpty: YourAlarmsState = YourAlarmsState(
+            listOf(
+                AlarmInfo.Stub,
+                AlarmInfo.Stub,
+                AlarmInfo.Stub
+            )
+        )
     }
 }

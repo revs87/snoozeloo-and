@@ -184,7 +184,7 @@ sealed interface TopBar {
     ) : TopBar {
         companion object {
             @Composable
-            fun Default() = Title(
+            fun alarmList() = Title(
                 isDarkTheme = isDarkTheme(),
                 titleRes = R.string.alarm_list_title,
             )
