@@ -1,14 +1,28 @@
 package com.rvcoding.snoozeloo.ui.component
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.sharp.Close
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -17,6 +31,7 @@ import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,8 +74,83 @@ fun TopBar(item: TopBar) {
                     )
                 )
             }
-            is TopBar.BackNavigator -> TODO()
-            is TopBar.Savable -> TODO()
+            is TopBar.BackNavigator -> {
+                FilledIconButton(
+                    onClick = { item.onLeftButtonClicked.invoke() },
+                    modifier = Modifier.size(32.dp),
+                    shape = RoundedCornerShape(5.dp),
+                    colors = IconButtonColors(
+                        containerColor = item.leftButtonColor,
+                        contentColor = item.leftButtonColor,
+                        disabledContainerColor = if (item.isDarkTheme) GreyDisabledDark else GreyDisabled,
+                        disabledContentColor = if (item.isDarkTheme) GreyDisabledDark else GreyDisabled
+                    )
+                ) {
+                    Icon(
+                        modifier = Modifier.size(20.dp),
+                        imageVector = item.leftButtonIconRes,
+                        contentDescription = "Navigate back",
+                        tint = item.leftButtonIconTint
+                    )
+                }
+            }
+            is TopBar.Savable -> {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    FilledIconButton(
+                        onClick = { item.onLeftButtonClicked.invoke() },
+                        modifier = Modifier.size(32.dp),
+                        shape = RoundedCornerShape(5.dp),
+                        colors = IconButtonColors(
+                            containerColor = item.leftButtonColor,
+                            contentColor = item.leftButtonColor,
+                            disabledContainerColor = if (item.isDarkTheme) GreyDisabledDark else GreyDisabled,
+                            disabledContentColor = if (item.isDarkTheme) GreyDisabledDark else GreyDisabled
+                        )
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(20.dp),
+                            imageVector = item.leftButtonIconRes,
+                            contentDescription = "Navigate back",
+                            tint = item.leftButtonIconTint
+                        )
+                    }
+                    TextButton(
+                        modifier = Modifier.fillMaxHeight(),
+                        enabled = item.rightButtonEnabled,
+                        contentPadding = PaddingValues(),
+                        colors = ButtonColors(
+                            containerColor = item.rightButtonColor,
+                            contentColor = item.rightButtonColor,
+                            disabledContainerColor = if (item.isDarkTheme) GreyDisabledDark else GreyDisabled,
+                            disabledContentColor = if (item.isDarkTheme) GreyDisabledDark else GreyDisabled
+                        ),
+                        onClick = { item.onRightButtonClicked.invoke() }) {
+                        Text(
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            text = stringResource(item.rightButtonTextRes),
+                            color = item.rightButtonTextTint,
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.SemiBold,
+                            style = LocalTextStyle.current.merge(
+                                TextStyle(
+                                    platformStyle = PlatformTextStyle(
+                                        includeFontPadding = false
+                                    ),
+                                    lineHeightStyle = LineHeightStyle(
+                                        alignment = LineHeightStyle.Alignment.Center,
+                                        trim = LineHeightStyle.Trim.Both
+                                    )
+                                )
+                            )
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -68,7 +158,21 @@ fun TopBar(item: TopBar) {
 @Preview(showBackground = true)
 @Composable
 fun TopBarPreview() {
-    TopBar(item = TopBar.Title.Default())
+//    TopBar(item = TopBar.Title.Default())
+//    TopBar(
+//        item = TopBar.BackNavigator(
+//            isDarkTheme = isDarkTheme(),
+//            onLeftButtonClicked = {}
+//        )
+//    )
+    TopBar(
+        item = TopBar.Savable(
+            isDarkTheme = isDarkTheme(),
+            rightButtonEnabled = true,
+            onRightButtonClicked = {},
+            onLeftButtonClicked = {}
+        )
+    )
 }
 
 
@@ -97,10 +201,10 @@ sealed interface TopBar {
 
     data class Savable(
         val isDarkTheme: Boolean,
-        val rightButtonTextRes: Int,
         val rightButtonEnabled: Boolean,
         val onRightButtonClicked: () -> Unit,
         val onLeftButtonClicked: () -> Unit,
+        val rightButtonTextRes: Int = R.string.save,
         val leftButtonIconRes: ImageVector = Icons.Sharp.Close,
         val leftButtonIconTint: Color = if (isDarkTheme) BackgroundSurfaceDark else BackgroundSurface,
         val leftButtonColor: Color = if (isDarkTheme) GreyDisabledDark else GreyDisabled,
