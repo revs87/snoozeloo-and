@@ -1,6 +1,7 @@
 package com.rvcoding.snoozeloo.ui.list
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rvcoding.snoozeloo.R
+import com.rvcoding.snoozeloo.model.AlarmInfo
+import com.rvcoding.snoozeloo.ui.component.AddAlarmButton
+import com.rvcoding.snoozeloo.ui.component.AlarmCard
 import com.rvcoding.snoozeloo.ui.component.TopBar
 import com.rvcoding.snoozeloo.ui.theme.Primary
 import com.rvcoding.snoozeloo.ui.theme.PrimaryDark
@@ -28,14 +32,33 @@ import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 
 
 @Composable
-fun YourAlarmsScreen() {
-    Column(
+fun YourAlarmsScreen(state: YourAlarmsState) {
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        if (state.alarms.isEmpty()) {
+            YourAlarmsEmptyScreen()
+        } else {
+            YourAlarmsNonEmptyScreen()
+        }
+
+        AddAlarmButton(modifier = Modifier.align(Alignment.BottomCenter))
+    }
+}
+
+@Composable
+fun YourAlarmsNonEmptyScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
         TopBar(item = TopBar.Title.Default())
 
+        AlarmCard(AlarmInfo.Stub)
+        AlarmCard(AlarmInfo.Stub)
+        AlarmCard(AlarmInfo.Stub)
     }
 }
 
@@ -73,6 +96,5 @@ fun YourAlarmsEmptyScreen() {
 @Preview(showBackground = true)
 @Composable
 fun AlarmDetailsScreenPreview() {
-    YourAlarmsScreen()
-//    YourAlarmsEmptyScreen()
+    YourAlarmsScreen(state = YourAlarmsState.NonEmpty)
 }

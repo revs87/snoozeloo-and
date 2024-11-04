@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import com.rvcoding.snoozeloo.ui.list.YourAlarmsScreen
+import com.rvcoding.snoozeloo.ui.list.YourAlarmsState
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurface
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurfaceDark
 import com.rvcoding.snoozeloo.ui.theme.SnoozelooTheme
@@ -38,7 +40,12 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding),
                         color = MaterialTheme.colorScheme.background
                     ) {
-                        YourAlarmsScreen()
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            YourAlarmsScreen(state = YourAlarmsState.NonEmpty)
+                        }
                     }
                 }
             }

@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.sharp.Close
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
@@ -194,7 +194,7 @@ sealed interface TopBar {
     data class BackNavigator(
         val isDarkTheme: Boolean,
         val onLeftButtonClicked: () -> Unit,
-        val leftButtonIconRes: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
+        val leftButtonIconRes: ImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
         val leftButtonIconTint: Color = if (isDarkTheme) BackgroundSurfaceDark else BackgroundSurface,
         val leftButtonColor: Color = if (isDarkTheme) PrimaryDark else Primary,
     ) : TopBar
@@ -205,7 +205,7 @@ sealed interface TopBar {
         val onRightButtonClicked: () -> Unit,
         val onLeftButtonClicked: () -> Unit,
         val rightButtonTextRes: Int = R.string.save,
-        val leftButtonIconRes: ImageVector = Icons.Sharp.Close,
+        val leftButtonIconRes: ImageVector = Icons.Rounded.Close,
         val leftButtonIconTint: Color = if (isDarkTheme) BackgroundSurfaceDark else BackgroundSurface,
         val leftButtonColor: Color = if (isDarkTheme) GreyDisabledDark else GreyDisabled,
         val rightButtonTextTint: Color = if (isDarkTheme) BackgroundSurfaceDark else BackgroundSurface,
