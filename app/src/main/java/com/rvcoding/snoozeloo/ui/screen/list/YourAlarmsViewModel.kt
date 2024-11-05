@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rvcoding.snoozeloo.R
 import com.rvcoding.snoozeloo.common.DispatchersProvider
+import com.rvcoding.snoozeloo.domain.model.Alarm
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
 import com.rvcoding.snoozeloo.navigation.Actions
 import com.rvcoding.snoozeloo.ui.component.UiText
@@ -29,18 +30,7 @@ class YourAlarmsViewModel(
 
     val alarms: StateFlow<YourAlarmsState> = alarmRepository
         .getAlarms()
-        .map { YourAlarmsState(it.map { alarm ->
-            AlarmInfo(
-                id = alarm.id,
-                enabled = alarm.enabled,
-                name = DynamicString(alarm.name),
-                timeFormat = when (TimeFormatPreference.is24HourFormat()){
-                    true -> TimeFormat.Time24(time = timeAsString(alarm.time, true))
-                    false -> TimeFormat.Time12(time = timeAsString(alarm.time, false), amOrPm = meridianAsString(alarm.time))
-                },
-                timeLeft = UiText.StringResource(R.string.alarm_time_left, arrayOf(timeLeftAsString(alarm.time)))
-            ).also { println("Alarm: $it") }
-        }) }
+        .map { YourAlarmsState(it.map { alarm -> alarm.toAlarmInfo().also { println("Alarm: $it") } }) }
         .onEach { println("Alarms: $it") }
         .stateIn(
             scope = viewModelScope + dispatchersProvider.io,
@@ -58,3 +48,14 @@ class YourAlarmsViewModel(
         }
     }
 }
+
+fun Alarm.toAlarmInfo(): AlarmInfo = AlarmInfo(
+    id = this.id,
+    enabled = this.enabled,
+    name = DynamicString(this.name),
+    timeFormat = when (TimeFormatPreference.is24HourFormat()){
+        true -> TimeFormat.Time24(time = timeAsString(this.time, true))
+        false -> TimeFormat.Time12(time = timeAsString(this.time, false), amOrPm = meridianAsString(this.time))
+    },
+    timeLeft = UiText.StringResource(R.string.alarm_time_left, arrayOf(timeLeftAsString(this.time)))
+)
