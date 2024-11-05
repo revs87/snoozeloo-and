@@ -1,6 +1,6 @@
 package com.rvcoding.snoozeloo.domain.model
 
-import com.rvcoding.snoozeloo.ui.util.nextMidnight
+import com.rvcoding.snoozeloo.ui.util.nextLocalMidnightInUTC
 
 data class Alarm(
     val id: Int = 0,
@@ -12,7 +12,7 @@ data class Alarm(
         val NewAlarm = Alarm(
             enabled = false,
             name = "Work",
-            time = nextMidnight()
+            time = nextLocalMidnightInUTC()
         )
     }
 }

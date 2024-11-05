@@ -51,7 +51,7 @@ fun timeLeftAsString(utcTime: Long, utcNow: Long = System.currentTimeMillis()): 
     }
 }
 
-fun nextMidnight(): Long {
+fun nextLocalMidnightInUTC(): Long {
     val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     val today = now.date
     val tomorrow = today.plus(1, DateTimeUnit.DAY)
