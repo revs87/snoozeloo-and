@@ -45,8 +45,8 @@ fun timeLeftAsString(utcTime: Long, utcNow: Long = System.currentTimeMillis()): 
         buildString {
             if (days > 0) append("${days}d ")
             if (hours > 0) append("${hours}h ")
-            if (minutes > 0) append("${minutes}min ")
-            if (seconds > 0) append("${seconds}sec")
+            if (days == 0L && minutes > 0) append("${minutes}min ")
+            if (days == 0L && hours == 0L && seconds > 0L) append("${seconds}sec")
         }.trim()
     }
 }
