@@ -31,6 +31,7 @@ class YourAlarmsViewModel(
         .getAlarms()
         .map { YourAlarmsState(it.map { alarm ->
             AlarmInfo(
+                id = alarm.id,
                 enabled = alarm.enabled,
                 name = DynamicString(alarm.name),
                 timeFormat = when (TimeFormatPreference.is24HourFormat()){
@@ -50,10 +51,9 @@ class YourAlarmsViewModel(
     fun onAction(action: Actions) {
         viewModelScope.launch(dispatchersProvider.io) {
             when (action) {
-                is Actions.OnAddAlarmButtonClicked -> {
-                    println("Alarm added: ${action.alarm.name}")
-                    alarmRepository.addAlarm(action.alarm)
-                }
+                is Actions.OnAddAlarmButtonClicked -> alarmRepository.addAlarm(action.alarm)
+                is Actions.OnAlarmCheckedChange -> alarmRepository.updateAlarmEnabled(id = action.id, enabled = action.checked)
+                is Actions.OnAlarmClicked -> { /*TODO*/ }
             }
         }
     }

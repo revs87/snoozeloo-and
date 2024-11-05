@@ -11,7 +11,11 @@ internal class AlarmRepositoryImpl(private val dao: AlarmsDao) : AlarmRepository
     override fun getAlarms(): Flow<List<Alarm>> = dao.getAlarms().map { list -> list.map { it.toDomain() } }
     override suspend fun getAlarm(id: Int): Alarm? = dao.getAlarmById(id)?.toDomain()
     override suspend fun addAlarm(alarm: Alarm) { dao.insertAlarm(alarm.toEntity()) }
-    override suspend fun updateAlarm(alarm: Alarm) { dao.updateAlarm(alarm.toEntity()) }
+    override suspend fun updateAlarmEnabled(id: Int, enabled: Boolean) {
+        getAlarm(id)?.let { alarm ->
+            dao.updateAlarm(alarm.copy(enabled = enabled).toEntity())
+        }
+    }
     override suspend fun deleteAlarm(id: Int) { dao.deleteAlarm(id) }
 }
 

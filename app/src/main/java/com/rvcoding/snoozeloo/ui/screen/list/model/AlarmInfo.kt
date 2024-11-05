@@ -6,6 +6,7 @@ import com.rvcoding.snoozeloo.ui.component.UiText.DynamicString
 import com.rvcoding.snoozeloo.ui.component.UiText.StringResource
 
 data class AlarmInfo(
+    val id: Int = 0,
     val enabled: Boolean,
     val name: UiText,
     val timeFormat: TimeFormat,

@@ -50,7 +50,7 @@ fun YourAlarmsScreen(
         if (state.alarms.isEmpty()) {
             YourAlarmsEmptyScreen()
         } else {
-            YourAlarmsNonEmptyScreen(state.alarms)
+            YourAlarmsNonEmptyScreen(state.alarms, onAction)
         }
 
         AddAlarmButton(
@@ -61,7 +61,10 @@ fun YourAlarmsScreen(
 }
 
 @Composable
-fun YourAlarmsNonEmptyScreen(alarms: List<AlarmInfo>) {
+fun YourAlarmsNonEmptyScreen(
+    alarms: List<AlarmInfo>,
+    onAction: (Actions) -> Unit
+) {
     Column(modifier = Modifier.fillMaxWidth()) {
         TopBar(item = TopBar.Title.alarmList())
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
@@ -72,7 +75,11 @@ fun YourAlarmsNonEmptyScreen(alarms: List<AlarmInfo>) {
                 items = alarms,
                 key = { index, _ -> index }
             ) { _, item ->
-                AlarmCard(item)
+                AlarmCard(
+                    alarmInfo = item,
+                    onCheckedChange = { checked -> onAction.invoke(Actions.OnAlarmCheckedChange(item.id, checked)) },
+                    onCardClicked = { onAction.invoke(Actions.OnAlarmClicked(item.id)) }
+                )
             }
             item {
                 Spacer(modifier = Modifier.height(48.dp))
