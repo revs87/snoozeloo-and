@@ -32,8 +32,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.rvcoding.snoozeloo.model.AlarmInfo
-import com.rvcoding.snoozeloo.model.TimeDisplay
+import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo
+import com.rvcoding.snoozeloo.ui.screen.list.model.TimeFormat
 import com.rvcoding.snoozeloo.ui.theme.PrimaryDisabled
 
 @Composable
@@ -64,7 +64,7 @@ fun AlarmCard(
                     .padding(16.dp),
             ) {
                 Text(
-                    text = alarmInfo.name,
+                    text = alarmInfo.name.asString(),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp
@@ -74,25 +74,25 @@ fun AlarmCard(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.Bottom
                 ) {
-                    when (alarmInfo.timeDisplay) {
-                        is TimeDisplay.Time12 -> {
+                    when (alarmInfo.timeFormat) {
+                        is TimeFormat.Time12 -> {
                             Text(
-                                text = alarmInfo.timeDisplay.time,
+                                text = alarmInfo.timeFormat.time,
                                 style = MaterialTheme.typography.headlineLarge,
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 42.sp
                             )
                             Text(
                                 modifier = Modifier.padding(start = 4.dp),
-                                text = alarmInfo.timeDisplay.amOrPm,
+                                text = alarmInfo.timeFormat.amOrPm,
                                 style = MaterialTheme.typography.headlineLarge,
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 24.sp
                             )
                         }
-                        is TimeDisplay.Time24 -> {
+                        is TimeFormat.Time24 -> {
                             Text(
-                                text = alarmInfo.timeDisplay.time,
+                                text = alarmInfo.timeFormat.time,
                                 style = MaterialTheme.typography.headlineLarge,
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 42.sp
@@ -102,7 +102,7 @@ fun AlarmCard(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = alarmInfo.durationLeft,
+                    text = alarmInfo.timeLeft.asString(),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium,
                     fontSize = 14.sp

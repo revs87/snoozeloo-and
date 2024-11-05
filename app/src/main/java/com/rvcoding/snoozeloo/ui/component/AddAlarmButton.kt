@@ -11,16 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.rvcoding.snoozeloo.navigation.Actions
 import com.rvcoding.snoozeloo.ui.theme.Primary
 
 @Composable
 fun AddAlarmButton(
     modifier: Modifier = Modifier,
-    onAction: (Actions) -> Unit = { _ -> }
+    onAction: () -> Unit = {}
 ) {
     FilledIconButton(
-        onClick = { onAction.invoke(Actions.OnAddAlarmButtonClicked) },
+        onClick = { onAction.invoke() },
         modifier = modifier.size(60.dp),
         colors = IconButtonDefaults.filledIconButtonColors(
             containerColor = Primary

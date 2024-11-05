@@ -1,7 +1,7 @@
 package com.rvcoding.snoozeloo.ui.screen.list
 
 import androidx.compose.runtime.Immutable
-import com.rvcoding.snoozeloo.model.AlarmInfo
+import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo
 
 
 @Immutable

@@ -24,10 +24,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rvcoding.snoozeloo.R
-import com.rvcoding.snoozeloo.model.AlarmInfo
+import com.rvcoding.snoozeloo.domain.model.Alarm
+import com.rvcoding.snoozeloo.navigation.Actions
 import com.rvcoding.snoozeloo.ui.component.AddAlarmButton
 import com.rvcoding.snoozeloo.ui.component.AlarmCard
 import com.rvcoding.snoozeloo.ui.component.TopBar
+import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo
 import com.rvcoding.snoozeloo.ui.theme.Primary
 import com.rvcoding.snoozeloo.ui.theme.PrimaryDark
 import com.rvcoding.snoozeloo.ui.theme.TextPrimary
@@ -36,7 +38,10 @@ import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 
 
 @Composable
-fun YourAlarmsScreen(state: YourAlarmsState) {
+fun YourAlarmsScreen(
+    state: YourAlarmsState,
+    onAction: (Actions) -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -48,7 +53,10 @@ fun YourAlarmsScreen(state: YourAlarmsState) {
             YourAlarmsNonEmptyScreen(state.alarms)
         }
 
-        AddAlarmButton(modifier = Modifier.align(Alignment.BottomCenter))
+        AddAlarmButton(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            onAction = { onAction.invoke(Actions.OnAddAlarmButtonClicked(alarm = Alarm.NewAlarm)) }
+        )
     }
 }
 
@@ -103,5 +111,5 @@ fun YourAlarmsEmptyScreen() {
 @Preview(showBackground = true)
 @Composable
 fun AlarmDetailsScreenPreview() {
-    YourAlarmsScreen(state = YourAlarmsState.NonEmpty)
+    YourAlarmsScreen(state = YourAlarmsState.NonEmpty, onAction = {})
 }
