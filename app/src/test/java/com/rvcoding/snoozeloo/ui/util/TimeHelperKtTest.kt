@@ -35,7 +35,7 @@ class TimeHelperKtTest {
             utcTime = 1730738988701,
             utcNow =  1730588988701
         )
-        assertEquals("1d 17h", timeString)
+        assertEquals("1d 17h 40min", timeString)
     }
 
     @Test
