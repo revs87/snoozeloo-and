@@ -1,7 +1,8 @@
 [versions]
 agp = "8.7.2"
-kotlin = "2.0.10"
+kotlin = "2.0.21"
 coreKtx = "1.15.0"
+coreSplash = "1.0.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -11,13 +12,14 @@ composeBom = "2024.10.01"
 koinBom = "4.0.0"
 kotlinx-serialization = "1.7.1"
 room = "2.7.0-alpha11"
-ksp = "2.0.10-1.0.24"
+ksp = "2.0.21-1.0.25"
 kotlinx-datetime = "0.6.1"
 coroutines = "1.8.1"
 datastore = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplash" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

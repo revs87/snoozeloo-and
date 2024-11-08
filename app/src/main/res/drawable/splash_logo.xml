@@ -4,11 +4,11 @@
     android:viewportWidth="82"
     android:viewportHeight="82">
     <group
-        android:name="Group"
+        android:name="splashLogoGroup"
         android:pivotX="41"
         android:pivotY="41"
-        android:scaleX="0.5"
-        android:scaleY="0.5">
+        android:scaleX="0.3"
+        android:scaleY="0.3">
 
         <path
             android:name="logoPath"
