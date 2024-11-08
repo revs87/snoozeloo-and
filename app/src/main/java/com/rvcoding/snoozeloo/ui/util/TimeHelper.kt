@@ -12,6 +12,7 @@ import kotlinx.datetime.toLocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.time.Duration
 
 
 private fun timeFormat(is24HourFormat: Boolean): String = when (is24HourFormat) {
@@ -34,12 +35,14 @@ private fun timeAsStringInternal(utcTime: Long, format: String): String {
 }
 
 fun timeAsString(utcTime: Long, is24HourFormat: Boolean): String = timeAsStringInternal(utcTime, timeFormat(is24HourFormat))
+fun timeWithMeridiemAsString(utcTime: Long, is24HourFormat: Boolean): String = timeAsStringInternal(utcTime, timeFormat(is24HourFormat)) + if (is24HourFormat) "" else " " + meridianAsString(utcTime)
 fun meridianAsString(utcTime: Long): String = timeAsStringInternal(utcTime, meridiemFormat()).uppercase()
 fun timeLeftAsString(utcTime: Long, utcNow: Long = System.currentTimeMillis()): String {
     val now = Instant.fromEpochMilliseconds(utcNow) // By utcNow means we're in the past of utcTime
     val instant = Instant.fromEpochMilliseconds(utcTime)
-    val duration = instant - now
-
+    return durationAsStr(duration = instant - now)
+}
+private fun durationAsStr(duration: Duration): String {
     return if (duration.isNegative()) {
         "0sec"
     } else {
@@ -56,6 +59,12 @@ fun timeLeftAsString(utcTime: Long, utcNow: Long = System.currentTimeMillis()): 
         }.trim()
     }
 }
+
+fun Long.hourInBounds(of: Int, and: Int): Boolean {
+    val localHours = this.toLocalHoursAnMinutes(is24Hour = true).first.toInt()
+    return localHours in of until and
+}
+
 fun Long.toLocalHoursAnMinutes(is24Hour: Boolean): Pair<String, String> {
     val instant = java.time.Instant.ofEpochMilli(this)
     val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()

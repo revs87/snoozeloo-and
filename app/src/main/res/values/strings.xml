@@ -3,5 +3,6 @@
     <string name="alarm_list_title">Your alarms</string>
     <string name="alarm_list_empty_message">It\'s empty! Add the first alarm so you don\'t miss an important moment!</string>
     <string name="alarm_time_left">Alarm in %s</string>
+    <string name="alarm_recommendation">Go to bed at %s to get %sh of sleep</string>
     <string name="save">Save</string>
 </resources>

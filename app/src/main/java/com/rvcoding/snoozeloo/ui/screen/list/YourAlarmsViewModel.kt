@@ -11,8 +11,12 @@ import com.rvcoding.snoozeloo.navigation.Actions
 import com.rvcoding.snoozeloo.ui.component.UiText
 import com.rvcoding.snoozeloo.ui.component.UiText.DynamicString
 import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo
+import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.HOURS
+import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.HOURS_DURATION
+import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.showSleepRecommendation
 import com.rvcoding.snoozeloo.ui.screen.list.model.TimeFormat
 import com.rvcoding.snoozeloo.ui.util.timeLeftAsString
+import com.rvcoding.snoozeloo.ui.util.timeWithMeridiemAsString
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -55,5 +59,16 @@ fun Alarm.toAlarmInfo(): AlarmInfo = AlarmInfo(
         true -> TimeFormat.Time24(hours = this.time.localHours, minutes = this.time.localMinutes)
         false -> TimeFormat.Time12(hours = this.time.localHours, minutes = this.time.localMinutes, meridiem = this.time.localMeridiem)
     },
-    timeLeft = UiText.StringResource(R.string.alarm_time_left, arrayOf(timeLeftAsString(this.time.utcTime)))
+    timeLeft = if (showSleepRecommendation(this.time.utcTime)) {
+        UiText.StringResource(R.string.alarm_recommendation, arrayOf(
+            timeWithMeridiemAsString(
+                utcTime = this.time.utcTime - HOURS_DURATION,
+                is24HourFormat = TimeFormatPreference.is24HourFormat()
+            ),
+            HOURS
+        ))
+    } else {
+        UiText.StringResource(R.string.alarm_time_left, arrayOf(timeLeftAsString(this.time.utcTime)))
+
+    }
 )

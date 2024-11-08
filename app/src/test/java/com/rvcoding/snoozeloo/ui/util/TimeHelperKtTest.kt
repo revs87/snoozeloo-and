@@ -110,6 +110,36 @@ class TimeHelperKtTest {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun inHourBoundsOf_from4_to10_returnsTrue() {
+        val utcTime = 1730694000000 // Nov 04 04:20:00 UTC
+        val actual = utcTime.hourInBounds(
+            of = 4,
+            and = 10
+        )
+        assertEquals(true, actual)
+    }
+
+    @Test
+    fun inHourBoundsOf_from5_to10_returnsFalse() {
+        val utcTime = 1730694000000 // Nov 04 04:20:00 UTC
+        val actual = utcTime.hourInBounds(
+            of = 5,
+            and = 10
+        )
+        assertEquals(false, actual)
+    }
+
+    @Test
+    fun inHourBoundsOf_from3_to4_returnsFalse() {
+        val utcTime = 1730694000000 // Nov 04 04:20:00 UTC
+        val actual = utcTime.hourInBounds(
+            of = 3,
+            and = 4
+        )
+        assertEquals(false, actual)
+    }
+
     private operator fun <F, S> Pair<F, S>.invoke(block: (customName1: F, customName2: S) -> Unit) = block(first, second)
     @Test
     fun toLocalHoursAnMinutes_12HourFormat() {
