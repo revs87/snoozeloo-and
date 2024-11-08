@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rvcoding.snoozeloo.R
 import com.rvcoding.snoozeloo.domain.model.Alarm
 import com.rvcoding.snoozeloo.navigation.Actions
@@ -35,10 +37,23 @@ import com.rvcoding.snoozeloo.ui.theme.PrimaryDark
 import com.rvcoding.snoozeloo.ui.theme.TextPrimary
 import com.rvcoding.snoozeloo.ui.theme.TextPrimaryDark
 import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun YourAlarmsScreen(
+fun YourAlarmsScreenRoot(
+    vm: YourAlarmsViewModel = koinViewModel(),
+) {
+    val state by vm.alarms.collectAsStateWithLifecycle()
+
+    YourAlarmsScreen(
+        state = state,
+        onAction = vm::onAction
+    )
+}
+
+@Composable
+private fun YourAlarmsScreen(
     state: YourAlarmsState,
     onAction: (Actions) -> Unit
 ) {
@@ -61,7 +76,7 @@ fun YourAlarmsScreen(
 }
 
 @Composable
-fun YourAlarmsNonEmptyScreen(
+private fun YourAlarmsNonEmptyScreen(
     alarms: List<AlarmInfo>,
     onAction: (Actions) -> Unit
 ) {
@@ -89,7 +104,7 @@ fun YourAlarmsNonEmptyScreen(
 }
 
 @Composable
-fun YourAlarmsEmptyScreen() {
+private fun YourAlarmsEmptyScreen() {
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(item = TopBar.Title.alarmList())
         Column(
@@ -117,6 +132,12 @@ fun YourAlarmsEmptyScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun AlarmDetailsScreenPreview() {
+private fun AlarmDetailsScreenNonEmptyPreview() {
     YourAlarmsScreen(state = YourAlarmsState.NonEmpty, onAction = {})
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun AlarmDetailsScreenEmptyPreview() {
+    YourAlarmsScreen(state = YourAlarmsState.Empty, onAction = {})
 }

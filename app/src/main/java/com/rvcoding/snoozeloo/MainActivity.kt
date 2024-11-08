@@ -17,19 +17,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.rvcoding.snoozeloo.ui.screen.list.YourAlarmsScreen
-import com.rvcoding.snoozeloo.ui.screen.list.YourAlarmsViewModel
+import com.rvcoding.snoozeloo.ui.screen.list.YourAlarmsScreenRoot
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurface
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurfaceDark
 import com.rvcoding.snoozeloo.ui.theme.SnoozelooTheme
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -78,9 +74,6 @@ class MainActivity : ComponentActivity() {
             )
         )
         setContent {
-            val vm: YourAlarmsViewModel by viewModel()
-            val state by vm.alarms.collectAsStateWithLifecycle()
-
             SnoozelooTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Surface(
@@ -90,10 +83,7 @@ class MainActivity : ComponentActivity() {
                         color = MaterialTheme.colorScheme.background
                     ) {
                         Box(modifier = Modifier.fillMaxSize()) {
-                            YourAlarmsScreen(
-                                state = state,
-                                onAction = vm::onAction
-                            )
+                            YourAlarmsScreenRoot()
                         }
                     }
                 }
