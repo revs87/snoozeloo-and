@@ -3,6 +3,7 @@ package com.rvcoding.snoozeloo.data.repository
 import com.rvcoding.snoozeloo.data.db.AlarmsDao
 import com.rvcoding.snoozeloo.data.db.AlarmsEntity
 import com.rvcoding.snoozeloo.domain.model.Alarm
+import com.rvcoding.snoozeloo.domain.model.Time
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -23,12 +24,12 @@ private fun AlarmsEntity.toDomain(): Alarm = Alarm(
     id = this.id,
     enabled = this.enabled,
     name = this.name,
-    time = this.time
+    time = Time.from(this.utcTime)
 )
 
 private fun Alarm.toEntity(): AlarmsEntity = AlarmsEntity(
     id = this.id,
     enabled = this.enabled,
     name = this.name,
-    time = this.time
+    utcTime = this.time.utcTime
 )

@@ -5,15 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.rvcoding.snoozeloo.R
 import com.rvcoding.snoozeloo.common.DispatchersProvider
 import com.rvcoding.snoozeloo.domain.model.Alarm
+import com.rvcoding.snoozeloo.domain.model.TimeFormatPreference
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
 import com.rvcoding.snoozeloo.navigation.Actions
 import com.rvcoding.snoozeloo.ui.component.UiText
 import com.rvcoding.snoozeloo.ui.component.UiText.DynamicString
 import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo
 import com.rvcoding.snoozeloo.ui.screen.list.model.TimeFormat
-import com.rvcoding.snoozeloo.ui.screen.list.model.TimeFormatPreference
-import com.rvcoding.snoozeloo.ui.util.meridianAsString
-import com.rvcoding.snoozeloo.ui.util.timeAsString
 import com.rvcoding.snoozeloo.ui.util.timeLeftAsString
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -54,8 +52,8 @@ fun Alarm.toAlarmInfo(): AlarmInfo = AlarmInfo(
     enabled = this.enabled,
     name = DynamicString(this.name),
     timeFormat = when (TimeFormatPreference.is24HourFormat()){
-        true -> TimeFormat.Time24(time = timeAsString(this.time, true))
-        false -> TimeFormat.Time12(time = timeAsString(this.time, false), amOrPm = meridianAsString(this.time))
+        true -> TimeFormat.Time24(hours = this.time.localHours, minutes = this.time.localMinutes)
+        false -> TimeFormat.Time12(hours = this.time.localHours, minutes = this.time.localMinutes, meridiem = this.time.localMeridiem)
     },
-    timeLeft = UiText.StringResource(R.string.alarm_time_left, arrayOf(timeLeftAsString(this.time)))
+    timeLeft = UiText.StringResource(R.string.alarm_time_left, arrayOf(timeLeftAsString(this.time.utcTime)))
 )

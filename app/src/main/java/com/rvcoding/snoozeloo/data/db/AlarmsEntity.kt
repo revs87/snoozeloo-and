@@ -8,5 +8,5 @@ class AlarmsEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val enabled: Boolean,
     val name: String,
-    val time: Long
+    val utcTime: Long
 )

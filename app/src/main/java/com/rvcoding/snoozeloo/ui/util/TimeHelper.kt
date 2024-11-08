@@ -1,6 +1,5 @@
 package com.rvcoding.snoozeloo.ui.util
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
@@ -10,15 +9,22 @@ import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 
-private fun getTimeFormat(is24HourFormat: Boolean): String = when (is24HourFormat) {
+private fun timeFormat(is24HourFormat: Boolean): String = when (is24HourFormat) {
     true -> "HH:mm"
     false -> "hh:mm"
 }
-private fun getMeridianFormat(): String = "a"
+private fun hoursFormat(is24HourFormat: Boolean): String = when (is24HourFormat) {
+    true -> "HH"
+    false -> "hh"
+}
+private fun minutesFormat(): String = "mm"
+private fun meridiemFormat(): String = "a"
+
 
 private fun timeAsStringInternal(utcTime: Long, format: String): String {
     val instant = Instant.fromEpochMilliseconds(utcTime)
@@ -27,8 +33,8 @@ private fun timeAsStringInternal(utcTime: Long, format: String): String {
     return formatter.format(zonedDateTime.toJavaLocalDateTime())
 }
 
-fun timeAsString(utcTime: Long, is24HourFormat: Boolean): String = timeAsStringInternal(utcTime, getTimeFormat(is24HourFormat))
-fun meridianAsString(utcTime: Long): String = timeAsStringInternal(utcTime, getMeridianFormat()).uppercase()
+fun timeAsString(utcTime: Long, is24HourFormat: Boolean): String = timeAsStringInternal(utcTime, timeFormat(is24HourFormat))
+fun meridianAsString(utcTime: Long): String = timeAsStringInternal(utcTime, meridiemFormat()).uppercase()
 fun timeLeftAsString(utcTime: Long, utcNow: Long = System.currentTimeMillis()): String {
     val now = Instant.fromEpochMilliseconds(utcNow) // By utcNow means we're in the past of utcTime
     val instant = Instant.fromEpochMilliseconds(utcTime)
@@ -50,13 +56,22 @@ fun timeLeftAsString(utcTime: Long, utcNow: Long = System.currentTimeMillis()): 
         }.trim()
     }
 }
+fun Long.toLocalHoursAnMinutes(is24Hour: Boolean): Pair<String, String> {
+    val instant = java.time.Instant.ofEpochMilli(this)
+    val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
+    val formatter = DateTimeFormatter.ofPattern("${hoursFormat(is24Hour)}:${minutesFormat()}")
+    return localDateTime.format(formatter).split(":").let { it[0] to it[1] }
+}
 
-fun nextLocalMidnightInUTC(): Long {
-    val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+fun nextLocalMidnightInUtc(
+    utcTime: Long = System.currentTimeMillis(),
+    tz: TimeZone = TimeZone.currentSystemDefault()
+): Long {
+    val now = Instant.fromEpochMilliseconds(utcTime).toLocalDateTime(tz)
     val today = now.date
     val tomorrow = today.plus(1, DateTimeUnit.DAY)
     val midnight = LocalDateTime(tomorrow, LocalTime(0, 0))
-    return midnight.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+    return midnight.toInstant(tz).toEpochMilliseconds()
 }
 
 fun stringAsUtcTime(time: String, is24HourFormat: Boolean): Long = 1731738988701

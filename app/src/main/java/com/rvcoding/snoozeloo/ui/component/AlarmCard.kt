@@ -82,14 +82,14 @@ fun AlarmCard(
                     when (alarmInfo.timeFormat) {
                         is TimeFormat.Time12 -> {
                             Text(
-                                text = alarmInfo.timeFormat.time,
+                                text = alarmInfo.timeFormat.hours + ":" + alarmInfo.timeFormat.minutes,
                                 style = MaterialTheme.typography.headlineLarge,
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 42.sp
                             )
                             Text(
                                 modifier = Modifier.padding(start = 4.dp),
-                                text = alarmInfo.timeFormat.amOrPm,
+                                text = alarmInfo.timeFormat.meridiem,
                                 style = MaterialTheme.typography.headlineLarge,
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 24.sp
@@ -97,7 +97,7 @@ fun AlarmCard(
                         }
                         is TimeFormat.Time24 -> {
                             Text(
-                                text = alarmInfo.timeFormat.time,
+                                text = alarmInfo.timeFormat.hours + ":" + alarmInfo.timeFormat.minutes,
                                 style = MaterialTheme.typography.headlineLarge,
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 42.sp

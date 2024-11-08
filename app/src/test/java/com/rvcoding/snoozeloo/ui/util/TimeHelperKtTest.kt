@@ -1,5 +1,6 @@
 package com.rvcoding.snoozeloo.ui.util
 
+import kotlinx.datetime.TimeZone
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -90,5 +91,44 @@ class TimeHelperKtTest {
             utcNow =  1730738988701
         )
         assertEquals("0sec", timeString)
+    }
+
+    @Test
+    fun nextLocalMidnightInUTC_LocalTimeZone() {
+        val actual = nextLocalMidnightInUtc(utcTime = 1730681988701) // Nov 04 00:59:48
+        val expected = 1730764800000 // Nov 05 00:00:00
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun nextLocalMidnightInUTC_NYTimeZone() {
+        val actual = nextLocalMidnightInUtc(
+            utcTime = 1730681988701, // Nov 04 00:59:48 UTC
+            tz = TimeZone.of("America/New_York") // Nov 03 19:59:48 GMT-5
+        )
+        val expected = 1730696400000 // Nov 04 00:00:00 @New York
+        assertEquals(expected, actual)
+    }
+
+    private operator fun <F, S> Pair<F, S>.invoke(block: (customName1: F, customName2: S) -> Unit) = block(first, second)
+    @Test
+    fun toLocalHoursAnMinutes_12HourFormat() {
+        val utcTime = 1730681988701
+        val localTime = utcTime.toLocalHoursAnMinutes(is24Hour = false)
+        localTime { hours, minutes ->
+            assertEquals("12", hours)
+            assertEquals("59", minutes)
+            assertEquals("AM", meridianAsString(utcTime))
+        }
+    }
+
+    @Test
+    fun toLocalHoursAnMinutes_24HourFormat() {
+        val utcTime = 1730681988701
+        val localTime = utcTime.toLocalHoursAnMinutes(is24Hour = true)
+        localTime { hours, minutes ->
+            assertEquals("00", hours)
+            assertEquals("59", minutes)
+        }
     }
 }
