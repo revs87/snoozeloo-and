@@ -12,7 +12,7 @@ val BackgroundSurface = Color(0xFFF6F6F6)
 val BackgroundCard = Color(0xFFFFFFFF)
 
 val PrimaryDark = Color(0xFFb99b00)
-val PrimaryDisabledDark = Color(0xFFBCC6FF)
+val PrimaryDisabledDark = Color(0xFF4a3e00)
 val GreyDisabledDark = Color(0xFF191919)
 val TextPrimaryDark = Color(0xFFf2f0e6)
 val TextSecondaryDark = Color(0xFF7a7a7a)

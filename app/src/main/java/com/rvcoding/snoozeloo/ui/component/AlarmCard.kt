@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -34,7 +35,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo
 import com.rvcoding.snoozeloo.ui.screen.list.model.TimeFormat
+import com.rvcoding.snoozeloo.ui.theme.Primary
+import com.rvcoding.snoozeloo.ui.theme.PrimaryDark
 import com.rvcoding.snoozeloo.ui.theme.PrimaryDisabled
+import com.rvcoding.snoozeloo.ui.theme.PrimaryDisabledDark
+import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 
 @Composable
 fun AlarmCard(
@@ -116,9 +121,12 @@ fun AlarmCard(
                         .padding(16.dp),
                     checked = checked,
                     colors = SwitchDefaults.colors(
-                        uncheckedBorderColor = PrimaryDisabled,
+                        checkedBorderColor = if (isDarkTheme()) PrimaryDark else Primary,
+                        checkedThumbColor = MaterialTheme.colorScheme.surface,
+                        checkedTrackColor = if (isDarkTheme()) PrimaryDark else Primary,
+                        uncheckedBorderColor = if (isDarkTheme()) PrimaryDisabledDark else PrimaryDisabled,
                         uncheckedThumbColor = MaterialTheme.colorScheme.surface,
-                        uncheckedTrackColor = PrimaryDisabled
+                        uncheckedTrackColor = if (isDarkTheme()) PrimaryDisabledDark else PrimaryDisabled
                     ),
                     onCheckedChange = { checked = it; onCheckedChange.invoke(it) },
                     thumbContent = {
@@ -126,7 +134,7 @@ fun AlarmCard(
                             imageVector = Icons.Rounded.CheckCircle,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.surface
+                            tint = Color.Transparent
                         )
                     }
                 )

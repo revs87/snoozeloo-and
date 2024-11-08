@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rvcoding.snoozeloo.ui.theme.Primary
+import com.rvcoding.snoozeloo.ui.theme.PrimaryDark
+import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 
 @Composable
 fun AddAlarmButton(
@@ -22,7 +24,7 @@ fun AddAlarmButton(
         onClick = { onAction.invoke() },
         modifier = modifier.size(60.dp),
         colors = IconButtonDefaults.filledIconButtonColors(
-            containerColor = Primary
+            containerColor = if (isDarkTheme()) PrimaryDark else Primary
         )
     ) {
         Icon(
