@@ -132,12 +132,12 @@ private fun YourAlarmsEmptyScreen() {
 
 @Preview(showBackground = true)
 @Composable
-private fun AlarmDetailsScreenNonEmptyPreview() {
+fun AlarmDetailsScreenNonEmptyPreview() {
     YourAlarmsScreen(state = YourAlarmsState.NonEmpty, onAction = {})
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun AlarmDetailsScreenEmptyPreview() {
+fun AlarmDetailsScreenEmptyPreview() {
     YourAlarmsScreen(state = YourAlarmsState.Empty, onAction = {})
 }
