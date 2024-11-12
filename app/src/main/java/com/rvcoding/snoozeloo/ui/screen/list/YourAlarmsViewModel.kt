@@ -46,6 +46,7 @@ class YourAlarmsViewModel(
                 is Actions.OnAddAlarmButtonClicked -> alarmRepository.addAlarm(action.alarm)
                 is Actions.OnAlarmCheckedChange -> alarmRepository.updateAlarmEnabled(id = action.id, enabled = action.checked)
                 is Actions.OnAlarmClicked -> { /*TODO*/ }
+                is Actions.OnAlarmDelete -> alarmRepository.deleteAlarm(id = action.id)
             }
         }
     }

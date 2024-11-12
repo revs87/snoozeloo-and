@@ -30,6 +30,7 @@ import com.rvcoding.snoozeloo.domain.model.Alarm
 import com.rvcoding.snoozeloo.navigation.Actions
 import com.rvcoding.snoozeloo.ui.component.AddAlarmButton
 import com.rvcoding.snoozeloo.ui.component.AlarmCard
+import com.rvcoding.snoozeloo.ui.component.SwipeToDeleteContainer
 import com.rvcoding.snoozeloo.ui.component.TopBar
 import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo
 import com.rvcoding.snoozeloo.ui.theme.Primary
@@ -88,13 +89,20 @@ private fun YourAlarmsNonEmptyScreen(
             }
             itemsIndexed(
                 items = alarms,
-                key = { index, _ -> index }
+                key = { _, item -> item.id }
             ) { _, item ->
-                AlarmCard(
-                    alarmInfo = item,
-                    onCheckedChange = { checked -> onAction.invoke(Actions.OnAlarmCheckedChange(item.id, checked)) },
-                    onCardClicked = { onAction.invoke(Actions.OnAlarmClicked(item.id)) }
-                )
+                SwipeToDeleteContainer(
+                    item = item,
+                    onDelete = {
+                        onAction.invoke(Actions.OnAlarmDelete(item.id))
+                    }
+                ) {
+                    AlarmCard(
+                        alarmInfo = item,
+                        onCheckedChange = { checked -> onAction.invoke(Actions.OnAlarmCheckedChange(item.id, checked)) },
+                        onCardClicked = { onAction.invoke(Actions.OnAlarmClicked(item.id)) }
+                    )
+                }
             }
             item {
                 Spacer(modifier = Modifier.height(48.dp))
