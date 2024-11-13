@@ -11,6 +11,7 @@ import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
 import java.util.Locale
 import kotlin.time.Duration
 
@@ -58,6 +59,25 @@ private fun durationAsStr(duration: Duration): String {
             if (days == 0L && hours == 0L && seconds > 0L) append("${seconds}sec")
         }.trim()
     }
+}
+
+fun Long.nextAlarmTime(utcNow: Long = System.currentTimeMillis()) : Long {
+    val alarm = Calendar.getInstance()
+    alarm.timeInMillis = this
+
+    val today = Calendar.getInstance()
+    today.timeInMillis = if (this > utcNow) this else utcNow
+
+    alarm.set(Calendar.YEAR, today.get(Calendar.YEAR))
+    alarm.set(Calendar.MONTH, today.get(Calendar.MONTH))
+    alarm.set(Calendar.DAY_OF_MONTH, today.get(Calendar.DAY_OF_MONTH))
+
+    if (alarm.timeInMillis < utcNow) {
+        alarm.add(Calendar.DAY_OF_MONTH, 1)
+        return alarm.timeInMillis
+    }
+
+    return alarm.timeInMillis
 }
 
 fun Long.hourInBounds(of: Int, and: Int): Boolean {

@@ -161,4 +161,31 @@ class TimeHelperKtTest {
             assertEquals("59", minutes)
         }
     }
+
+    @Test
+    fun nextDailyTime_alarm11h00day04_now10h00day04_returns11h00day04() {
+        val alarmTime = 1730718000000    // Nov 04 11:00:00 UTC
+        val nowTime = 1730714400000      // Nov 04 10:00:00 UTC
+        val expectedTime = 1730718000000 // Nov 04 11:00:00 UTC
+        val localTime = alarmTime.nextAlarmTime(utcNow = nowTime)
+        assertEquals(expectedTime, localTime)
+    }
+
+    @Test
+    fun nextDailyTime_alarm11h00day05_now10h00day04_returns11h00day05() {
+        val alarmTime = 1730804400000    // Nov 05 11:00:00 UTC
+        val nowTime = 1730714400000      // Nov 04 10:00:00 UTC
+        val expectedTime = 1730804400000 // Nov 05 11:00:00 UTC
+        val localTime = alarmTime.nextAlarmTime(utcNow = nowTime)
+        assertEquals(expectedTime, localTime)
+    }
+
+    @Test
+    fun nextDailyTime_alarm10h00day04_now11h00day05_returns10h00day06() {
+        val alarmTime = 1730628000000    // Nov 04 10:00:00 UTC
+        val nowTime = 1730804400000      // Nov 05 11:00:00 UTC
+        val expectedTime = 1730887200000 // Nov 06 10:00:00 UTC
+        val localTime = alarmTime.nextAlarmTime(utcNow = nowTime)
+        assertEquals(expectedTime, localTime)
+    }
 }
