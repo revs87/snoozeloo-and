@@ -3,7 +3,10 @@ package com.rvcoding.snoozeloo.domain.model
 import com.rvcoding.snoozeloo.ui.util.meridianAsString
 import com.rvcoding.snoozeloo.ui.util.nextLocalMidnightInUtc
 import com.rvcoding.snoozeloo.ui.util.toLocalHoursAnMinutes
+import kotlinx.serialization.Serializable
 
+
+@Serializable
 data class Alarm(
     val id: Int = 0,
     val enabled: Boolean,
@@ -18,6 +21,7 @@ data class Alarm(
     }
 }
 
+@Serializable
 data class Time(
     val utcTime: Long,
     val localHours: String = utcTime.toLocalHoursAnMinutes(TimeFormatPreference.is24HourFormat()).first,

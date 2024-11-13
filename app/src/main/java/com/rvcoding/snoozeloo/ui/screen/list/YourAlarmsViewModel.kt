@@ -6,11 +6,12 @@ import com.rvcoding.snoozeloo.R
 import com.rvcoding.snoozeloo.common.DispatchersProvider
 import com.rvcoding.snoozeloo.domain.model.Alarm
 import com.rvcoding.snoozeloo.domain.model.TimeFormatPreference
+import com.rvcoding.snoozeloo.domain.navigation.Actions
+import com.rvcoding.snoozeloo.domain.navigation.Destination.AlarmSettings
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
-import com.rvcoding.snoozeloo.navigation.Actions
-import com.rvcoding.snoozeloo.ui.component.UiText
 import com.rvcoding.snoozeloo.ui.component.UiText.DynamicString
 import com.rvcoding.snoozeloo.ui.component.UiText.StringResource
+import com.rvcoding.snoozeloo.ui.navigation.Navigator
 import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo
 import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.HOURS
 import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.HOURS_DURATION
@@ -29,7 +30,8 @@ import kotlinx.coroutines.plus
 
 class YourAlarmsViewModel(
     private val dispatchersProvider: DispatchersProvider,
-    private val alarmRepository: AlarmRepository
+    private val alarmRepository: AlarmRepository,
+    private val navigator: Navigator
 ) : ViewModel() {
 
     val alarms: StateFlow<YourAlarmsState> = alarmRepository
@@ -45,10 +47,10 @@ class YourAlarmsViewModel(
     fun onAction(action: Actions) {
         viewModelScope.launch(dispatchersProvider.io) {
             when (action) {
-                is Actions.OnAddAlarmButtonClicked -> alarmRepository.addAlarm(action.alarm)
-                is Actions.OnAlarmCheckedChange -> alarmRepository.updateAlarmEnabled(id = action.id, enabled = action.checked)
-                is Actions.OnAlarmClicked -> { /*TODO*/ }
-                is Actions.OnAlarmDelete -> alarmRepository.deleteAlarm(id = action.id)
+                is Actions.YourAlarms.OnAddAlarmButtonClicked -> alarmRepository.addAlarm(action.alarm)
+                is Actions.YourAlarms.OnAlarmCheckedChange -> alarmRepository.updateAlarmEnabled(id = action.id, enabled = action.checked)
+                is Actions.YourAlarms.OnAlarmClicked -> navigator.navigate(destination = AlarmSettings(action.id))
+                is Actions.YourAlarms.OnAlarmDelete -> alarmRepository.deleteAlarm(id = action.id)
             }
         }
     }

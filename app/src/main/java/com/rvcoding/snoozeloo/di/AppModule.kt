@@ -4,7 +4,10 @@ import com.rvcoding.snoozeloo.common.DispatchersProvider
 import com.rvcoding.snoozeloo.common.StandardDispatchersProvider
 import com.rvcoding.snoozeloo.data.db.AlarmsDatabase
 import com.rvcoding.snoozeloo.data.repository.AlarmRepositoryImpl
+import com.rvcoding.snoozeloo.domain.navigation.Destination
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
+import com.rvcoding.snoozeloo.ui.navigation.DefaultNavigator
+import com.rvcoding.snoozeloo.ui.navigation.Navigator
 import com.rvcoding.snoozeloo.ui.screen.list.YourAlarmsViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +27,13 @@ val appModule = module {
     single<CoroutineScope> { CoroutineScope(StandardDispatchersProvider.io + coExceptionHandler) }
 
     /**
+     * Navigation
+     * */
+    single<Navigator> {
+        DefaultNavigator(startDestination = Destination.YourAlarms)
+    }
+
+    /**
      * Databases
      * */
     single { AlarmsDatabase.createDb(androidContext()).dao }
@@ -36,5 +46,5 @@ val appModule = module {
     /**
      * ViewModels
      * */
-    viewModel { YourAlarmsViewModel(get(), get()) }
+    viewModel { YourAlarmsViewModel(get(), get(), get()) }
 }

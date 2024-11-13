@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rvcoding.snoozeloo.R
 import com.rvcoding.snoozeloo.domain.model.Alarm
-import com.rvcoding.snoozeloo.navigation.Actions
+import com.rvcoding.snoozeloo.domain.navigation.Actions
 import com.rvcoding.snoozeloo.ui.component.AddAlarmButton
 import com.rvcoding.snoozeloo.ui.component.AlarmCard
 import com.rvcoding.snoozeloo.ui.component.SwipeToDeleteContainer
@@ -71,7 +71,7 @@ private fun YourAlarmsScreen(
 
         AddAlarmButton(
             modifier = Modifier.align(Alignment.BottomCenter),
-            onAction = { onAction.invoke(Actions.OnAddAlarmButtonClicked(alarm = Alarm.NewAlarm)) }
+            onAction = { onAction.invoke(Actions.YourAlarms.OnAddAlarmButtonClicked(alarm = Alarm.NewAlarm)) }
         )
     }
 }
@@ -94,13 +94,13 @@ private fun YourAlarmsNonEmptyScreen(
                 SwipeToDeleteContainer(
                     item = item,
                     onDelete = {
-                        onAction.invoke(Actions.OnAlarmDelete(item.id))
+                        onAction.invoke(Actions.YourAlarms.OnAlarmDelete(item.id))
                     }
                 ) {
                     AlarmCard(
                         alarmInfo = item,
-                        onCheckedChange = { checked -> onAction.invoke(Actions.OnAlarmCheckedChange(item.id, checked)) },
-                        onCardClicked = { onAction.invoke(Actions.OnAlarmClicked(item.id)) }
+                        onCheckedChange = { checked -> onAction.invoke(Actions.YourAlarms.OnAlarmCheckedChange(item.id, checked)) },
+                        onCardClicked = { onAction.invoke(Actions.YourAlarms.OnAlarmClicked(item.id)) }
                     )
                 }
             }
