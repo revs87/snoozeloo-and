@@ -56,7 +56,7 @@ fun YourAlarmsScreenRoot(
 @Composable
 private fun YourAlarmsScreen(
     state: YourAlarmsState,
-    onAction: (Actions) -> Unit
+    onAction: (Actions.YourAlarms) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -79,7 +79,7 @@ private fun YourAlarmsScreen(
 @Composable
 private fun YourAlarmsNonEmptyScreen(
     alarms: List<AlarmInfo>,
-    onAction: (Actions) -> Unit
+    onAction: (Actions.YourAlarms) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         TopBar(item = TopBar.Title.alarmList())

@@ -44,7 +44,7 @@ class YourAlarmsViewModel(
             initialValue = YourAlarmsState(emptyList())
         )
 
-    fun onAction(action: Actions) {
+    fun onAction(action: Actions.YourAlarms) {
         viewModelScope.launch(dispatchersProvider.io) {
             when (action) {
                 is Actions.YourAlarms.OnAddAlarmButtonClicked -> alarmRepository.addAlarm(action.alarm)
