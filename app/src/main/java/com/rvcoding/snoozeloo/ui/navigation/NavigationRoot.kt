@@ -5,8 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.rvcoding.snoozeloo.domain.navigation.Destination.YourAlarms
+import androidx.navigation.toRoute
+import com.rvcoding.snoozeloo.domain.navigation.Destination
 import com.rvcoding.snoozeloo.ui.screen.list.YourAlarmsScreenRoot
+import com.rvcoding.snoozeloo.ui.screen.settings.AlarmSettingsScreenRoot
 import org.koin.compose.koinInject
 
 
@@ -31,8 +33,12 @@ fun NavigationRoot(
         navController = navController,
         startDestination = navigator.startDestination
     ) {
-        composable<YourAlarms> {
+        composable<Destination.YourAlarms> {
             YourAlarmsScreenRoot()
+        }
+        composable<Destination.AlarmSettings> {
+            val alarmId = it.toRoute<Destination.AlarmSettings>().id
+            AlarmSettingsScreenRoot(alarmId = alarmId)
         }
     }
 }

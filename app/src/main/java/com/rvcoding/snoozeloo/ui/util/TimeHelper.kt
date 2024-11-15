@@ -81,15 +81,23 @@ fun Long.nextAlarmTime(utcNow: Long = System.currentTimeMillis()) : Long {
 }
 
 fun Long.hourInBounds(of: Int, and: Int): Boolean {
-    val localHours = this.toLocalHoursAnMinutes(is24Hour = true).first.toInt()
+    val localHours = this.toLocalHoursAndMinutes(is24Hour = true).first.toInt()
     return localHours in of until and
 }
 
-fun Long.toLocalHoursAnMinutes(is24Hour: Boolean): Pair<String, String> {
+fun Long.toLocalHoursAndMinutes(is24Hour: Boolean): Pair<String, String> {
     val instant = java.time.Instant.ofEpochMilli(this)
     val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
     val formatter = DateTimeFormatter.ofPattern("${hoursFormat(is24Hour)}:${minutesFormat()}")
     return localDateTime.format(formatter).split(":").let { it[0] to it[1] }
+}
+
+fun Pair<String, String>.fromLocalHoursAndMinutes(): Long {
+    val (hours, minutes) = this
+    val calendar = Calendar.getInstance(java.util.TimeZone.getDefault())
+    calendar.set(Calendar.HOUR_OF_DAY, hours.toInt())
+    calendar.set(Calendar.MINUTE, minutes.toInt())
+    return calendar.timeInMillis
 }
 
 fun nextLocalMidnightInUtc(

@@ -1,5 +1,6 @@
 package com.rvcoding.snoozeloo.di
 
+import androidx.lifecycle.SavedStateHandle
 import com.rvcoding.snoozeloo.common.DispatchersProvider
 import com.rvcoding.snoozeloo.common.StandardDispatchersProvider
 import com.rvcoding.snoozeloo.data.db.AlarmsDatabase
@@ -9,6 +10,7 @@ import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
 import com.rvcoding.snoozeloo.ui.navigation.DefaultNavigator
 import com.rvcoding.snoozeloo.ui.navigation.Navigator
 import com.rvcoding.snoozeloo.ui.screen.list.YourAlarmsViewModel
+import com.rvcoding.snoozeloo.ui.screen.settings.AlarmSettingsViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import org.koin.android.ext.koin.androidContext
@@ -47,4 +49,5 @@ val appModule = module {
      * ViewModels
      * */
     viewModel { YourAlarmsViewModel(get(), get(), get()) }
+    viewModel { AlarmSettingsViewModel(get(), get(), get(), SavedStateHandle()) }
 }

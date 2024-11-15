@@ -2,24 +2,12 @@ package com.rvcoding.snoozeloo.ui.screen.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rvcoding.snoozeloo.R
 import com.rvcoding.snoozeloo.common.DispatchersProvider
-import com.rvcoding.snoozeloo.domain.model.Alarm
-import com.rvcoding.snoozeloo.domain.model.TimeFormatPreference
+import com.rvcoding.snoozeloo.domain.model.toAlarmInfo
 import com.rvcoding.snoozeloo.domain.navigation.Actions
 import com.rvcoding.snoozeloo.domain.navigation.Destination.AlarmSettings
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
-import com.rvcoding.snoozeloo.ui.component.UiText.DynamicString
-import com.rvcoding.snoozeloo.ui.component.UiText.StringResource
 import com.rvcoding.snoozeloo.ui.navigation.Navigator
-import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo
-import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.HOURS
-import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.HOURS_DURATION
-import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.showSleepRecommendation
-import com.rvcoding.snoozeloo.ui.screen.list.model.TimeFormat
-import com.rvcoding.snoozeloo.ui.util.nextAlarmTime
-import com.rvcoding.snoozeloo.ui.util.timeLeftAsString
-import com.rvcoding.snoozeloo.ui.util.timeWithMeridiemAsString
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -47,7 +35,7 @@ class YourAlarmsViewModel(
     fun onAction(action: Actions.YourAlarms) {
         viewModelScope.launch(dispatchersProvider.io) {
             when (action) {
-                is Actions.YourAlarms.OnAddAlarmButtonClicked -> alarmRepository.addAlarm(action.alarm)
+                is Actions.YourAlarms.OnAddAlarmButtonClicked ->  navigator.navigate(destination = AlarmSettings(-1))
                 is Actions.YourAlarms.OnAlarmCheckedChange -> alarmRepository.updateAlarmEnabled(id = action.id, enabled = action.checked)
                 is Actions.YourAlarms.OnAlarmClicked -> navigator.navigate(destination = AlarmSettings(action.id))
                 is Actions.YourAlarms.OnAlarmDelete -> alarmRepository.deleteAlarm(id = action.id)
@@ -55,24 +43,3 @@ class YourAlarmsViewModel(
         }
     }
 }
-
-fun Alarm.toAlarmInfo(): AlarmInfo = AlarmInfo(
-    id = this.id,
-    enabled = this.enabled,
-    name = DynamicString(this.name),
-    timeFormat = when (TimeFormatPreference.is24HourFormat()){
-        true -> TimeFormat.Time24(hours = this.time.localHours, minutes = this.time.localMinutes)
-        false -> TimeFormat.Time12(hours = this.time.localHours, minutes = this.time.localMinutes, meridiem = this.time.localMeridiem)
-    },
-    timeLeft = if (showSleepRecommendation(this.time.utcTime)) {
-        StringResource(R.string.alarm_recommendation, arrayOf(
-            timeWithMeridiemAsString(
-                utcTime = this.time.utcTime - HOURS_DURATION,
-                is24HourFormat = TimeFormatPreference.is24HourFormat()
-            ),
-            HOURS
-        ))
-    } else {
-        StringResource(R.string.alarm_time_left, arrayOf(timeLeftAsString(this.time.utcTime.nextAlarmTime())))
-    }
-)

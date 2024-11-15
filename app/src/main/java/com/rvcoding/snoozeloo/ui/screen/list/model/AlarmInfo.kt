@@ -1,9 +1,12 @@
 package com.rvcoding.snoozeloo.ui.screen.list.model
 
 import com.rvcoding.snoozeloo.R
+import com.rvcoding.snoozeloo.domain.model.Alarm
+import com.rvcoding.snoozeloo.domain.model.Time
 import com.rvcoding.snoozeloo.ui.component.UiText
 import com.rvcoding.snoozeloo.ui.component.UiText.DynamicString
 import com.rvcoding.snoozeloo.ui.component.UiText.StringResource
+import com.rvcoding.snoozeloo.ui.util.fromLocalHoursAndMinutes
 import com.rvcoding.snoozeloo.ui.util.hourInBounds
 
 data class AlarmInfo(
@@ -33,3 +36,13 @@ sealed interface TimeFormat {
     data class Time24(val hours: String, val minutes: String) : TimeFormat
     data class Time12(val hours: String, val minutes: String, val meridiem: String) : TimeFormat
 }
+
+fun AlarmInfo.toDomain(): Alarm = Alarm(
+    id = id,
+    enabled = enabled,
+    name = (name as DynamicString).value,
+    time = Time(utcTime = when (timeFormat) {
+        is TimeFormat.Time24 -> Pair(timeFormat.hours, timeFormat.minutes).fromLocalHoursAndMinutes()
+        is TimeFormat.Time12 -> Pair(timeFormat.hours, timeFormat.minutes).fromLocalHoursAndMinutes()
+    })
+)

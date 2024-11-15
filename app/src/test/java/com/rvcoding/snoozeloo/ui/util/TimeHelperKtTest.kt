@@ -144,7 +144,7 @@ class TimeHelperKtTest {
     @Test
     fun toLocalHoursAnMinutes_12HourFormat() {
         val utcTime = 1730681988701
-        val localTime = utcTime.toLocalHoursAnMinutes(is24Hour = false)
+        val localTime = utcTime.toLocalHoursAndMinutes(is24Hour = false)
         localTime { hours, minutes ->
             assertEquals("12", hours)
             assertEquals("59", minutes)
@@ -155,7 +155,7 @@ class TimeHelperKtTest {
     @Test
     fun toLocalHoursAnMinutes_24HourFormat() {
         val utcTime = 1730681988701
-        val localTime = utcTime.toLocalHoursAnMinutes(is24Hour = true)
+        val localTime = utcTime.toLocalHoursAndMinutes(is24Hour = true)
         localTime { hours, minutes ->
             assertEquals("00", hours)
             assertEquals("59", minutes)

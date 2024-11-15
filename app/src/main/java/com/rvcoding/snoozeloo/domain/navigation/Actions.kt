@@ -9,4 +9,17 @@ sealed interface Actions {
         data class OnAlarmClicked(val id: Int) : YourAlarms
         data class OnAlarmDelete(val id: Int) : YourAlarms
     }
+
+    sealed interface AlarmSettings : Actions {
+        data object Close : AlarmSettings
+        data object Save : AlarmSettings
+        data object OpenTimePicker : AlarmSettings
+        data object OpenNameDialog : AlarmSettings
+        data object SaveNameDialog : AlarmSettings
+        data object CloseNameDialog : AlarmSettings
+    }
+
+    sealed interface AlarmTrigger : Actions {
+        data object TurnOff : AlarmTrigger
+    }
 }
