@@ -1,5 +1,6 @@
 package com.rvcoding.snoozeloo.ui.util
 
+import com.rvcoding.snoozeloo.domain.model.TimeFormatPreference
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
@@ -92,10 +93,17 @@ fun Long.toLocalHoursAndMinutes(is24Hour: Boolean): Pair<String, String> {
     return localDateTime.format(formatter).split(":").let { it[0] to it[1] }
 }
 
-fun Pair<String, String>.fromLocalHoursAndMinutes(): Long {
-    val (hours, minutes) = this
+fun Triple<String, String, Boolean>.fromLocalHoursAndMinutes(is24HourFormat: Boolean = TimeFormatPreference.is24HourFormat()): Long {
+    val (hours, minutes, isPM) = this
+    val hour = hours.toInt()
     val calendar = Calendar.getInstance(java.util.TimeZone.getDefault())
-    calendar.set(Calendar.HOUR_OF_DAY, hours.toInt())
+    when {
+        is24HourFormat -> calendar.set(Calendar.HOUR_OF_DAY, hours.toInt())
+        !is24HourFormat && !isPM && hour == 12 -> calendar.set(Calendar.HOUR_OF_DAY, 0)
+        !is24HourFormat && !isPM && hour != 12 -> calendar.set(Calendar.HOUR_OF_DAY, hours.toInt())
+        !is24HourFormat &&  isPM && hour == 12 -> calendar.set(Calendar.HOUR_OF_DAY, 12)
+        !is24HourFormat &&  isPM && hour != 12 -> calendar.set(Calendar.HOUR_OF_DAY, hours.toInt() + 12)
+    }
     calendar.set(Calendar.MINUTE, minutes.toInt())
     return calendar.timeInMillis
 }

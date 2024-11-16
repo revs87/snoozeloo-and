@@ -42,7 +42,7 @@ fun AlarmInfo.toDomain(): Alarm = Alarm(
     enabled = enabled,
     name = (name as DynamicString).value,
     time = Time(utcTime = when (timeFormat) {
-        is TimeFormat.Time24 -> Pair(timeFormat.hours, timeFormat.minutes).fromLocalHoursAndMinutes()
-        is TimeFormat.Time12 -> Pair(timeFormat.hours, timeFormat.minutes).fromLocalHoursAndMinutes()
+        is TimeFormat.Time24 -> Triple(timeFormat.hours, timeFormat.minutes, false).fromLocalHoursAndMinutes()
+        is TimeFormat.Time12 -> Triple(timeFormat.hours, timeFormat.minutes, timeFormat.meridiem == "PM").fromLocalHoursAndMinutes()
     })
 )

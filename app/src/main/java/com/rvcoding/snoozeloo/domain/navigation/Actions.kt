@@ -12,8 +12,14 @@ sealed interface Actions {
 
     sealed interface AlarmSettings : Actions {
         data object Close : AlarmSettings
-        data object Save : AlarmSettings
-        data object OpenTimePicker : AlarmSettings
+        data class Save(val alarm: Alarm) : AlarmSettings
+        data class Load(val alarmId: Int) : AlarmSettings
+        data class OnTimeChange(
+            val current: Alarm,
+            val hour: Int,
+            val minute: Int,
+            val afternoon: Boolean
+        ) : AlarmSettings
         data object OpenNameDialog : AlarmSettings
         data object SaveNameDialog : AlarmSettings
         data object CloseNameDialog : AlarmSettings

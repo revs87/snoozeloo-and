@@ -188,4 +188,69 @@ class TimeHelperKtTest {
         val localTime = alarmTime.nextAlarmTime(utcNow = nowTime)
         assertEquals(expectedTime, localTime)
     }
+
+    @Test
+    fun fromLocalHoursAndMinutes_10h00am_returnsUTC() {
+        val isPM = false
+        val is24HourFormat = false
+        val expectedHourAndMinute = Pair("10", "00")    // Nov 04 10:00:00 UTC
+
+        val actualHourAndMinute = Triple("10", "00", isPM)
+            .fromLocalHoursAndMinutes(is24HourFormat = is24HourFormat)
+            .toLocalHoursAndMinutes(is24Hour = is24HourFormat)
+
+        assertEquals(expectedHourAndMinute, actualHourAndMinute)
+    }
+
+    @Test
+    fun fromLocalHoursAndMinutes_12h00am_returnsUTC_andLocalHourAndMinute() {
+        val isPM = false
+        val is24HourFormat = false
+        val expectedHourAndMinute = Pair("12", "00")
+
+        val actualHourAndMinute = Triple("12", "00", isPM)
+            .fromLocalHoursAndMinutes(is24HourFormat = is24HourFormat)
+            .toLocalHoursAndMinutes(is24Hour = is24HourFormat)
+
+        assertEquals(expectedHourAndMinute, actualHourAndMinute)
+    }
+
+    @Test
+    fun fromLocalHoursAndMinutes_12h00pm_returnsUTC_andLocalHourAndMinute() {
+        val isPM = true
+        val is24HourFormat = false
+        val expectedHourAndMinute = Pair("12", "00")
+
+        val actualHourAndMinute = Triple("12", "00", isPM)
+            .fromLocalHoursAndMinutes(is24HourFormat = is24HourFormat)
+            .toLocalHoursAndMinutes(is24Hour = is24HourFormat)
+
+        assertEquals(expectedHourAndMinute, actualHourAndMinute)
+    }
+
+    @Test
+    fun fromLocalHoursAndMinutes_22h00_returnsUTC_andLocalHourAndMinute() {
+        val isPM = true
+        val is24HourFormat = true
+        val expectedHourAndMinute = Pair("22", "00")
+
+        val actualHourAndMinute = Triple("22", "00", isPM)
+            .fromLocalHoursAndMinutes(is24HourFormat = is24HourFormat)
+            .toLocalHoursAndMinutes(is24Hour = is24HourFormat)
+
+        assertEquals(expectedHourAndMinute, actualHourAndMinute)
+    }
+
+    @Test
+    fun fromLocalHoursAndMinutes_00h00_returnsUTC_andLocalHourAndMinute() {
+        val isPM = true
+        val is24HourFormat = true
+        val expectedHourAndMinute = Pair("00", "00")
+
+        val actualHourAndMinute = Triple("00", "00", isPM)
+            .fromLocalHoursAndMinutes(is24HourFormat = is24HourFormat)
+            .toLocalHoursAndMinutes(is24Hour = is24HourFormat)
+
+        assertEquals(expectedHourAndMinute, actualHourAndMinute)
+    }
 }
