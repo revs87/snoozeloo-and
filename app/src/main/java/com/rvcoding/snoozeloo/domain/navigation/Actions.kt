@@ -18,7 +18,7 @@ sealed interface Actions {
             val current: Alarm,
             val hour: Int,
             val minute: Int,
-            val afternoon: Boolean
+            val isAfternoon: Boolean
         ) : AlarmSettings
         data object OpenNameDialog : AlarmSettings
         data object SaveNameDialog : AlarmSettings

@@ -47,7 +47,7 @@ class AlarmSettingsViewModel(
     @OptIn(FlowPreview::class)
     val state: StateFlow<AlarmSettingsState> = savedStateHandle.getStateFlow(
         key = SAVE_STATE_KEY,
-        initialValue = Json.encodeToString(AlarmSettingsState.serializer(), AlarmSettingsState.Stub)
+        initialValue = Json.encodeToString(AlarmSettingsState.serializer(), AlarmSettingsState.Initial)
     )
         .map { Json.decodeFromString(AlarmSettingsState.serializer(), it) }
         .debounce(500L)
@@ -57,7 +57,7 @@ class AlarmSettingsViewModel(
         .stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(5_000L),
-            initialValue = AlarmSettingsState.Stub
+            initialValue = AlarmSettingsState.Initial
         )
 
     fun onAction(action: Actions.AlarmSettings) {
@@ -65,9 +65,10 @@ class AlarmSettingsViewModel(
             when (action) {
                 Actions.AlarmSettings.Close -> navigator.navigateUp()
                 is Actions.AlarmSettings.Save -> {
+                    println("Saving: id=${action.alarm.id} hour=${action.alarm.time.localHours} minute=${action.alarm.time.localMinutes} meridiem=${action.alarm.time.localMeridiem}")
                     action.alarm.let {
-                        if (it.id == -1) alarmRepository.addAlarm(it)
-                        else alarmRepository.updateAlarm(it)
+                        if (it.id == -1) alarmRepository.addAlarm(it.copy(enabled = true))
+                        else alarmRepository.updateAlarm(it.copy(enabled = true))
                     }
                     navigator.navigateUp()
                 }
@@ -80,7 +81,7 @@ class AlarmSettingsViewModel(
                             utcTime = Triple(
                                 action.hour.toString(),
                                 action.minute.toString(),
-                                action.afternoon
+                                action.isAfternoon
                             ).fromLocalHoursAndMinutes()
                         )
                     )

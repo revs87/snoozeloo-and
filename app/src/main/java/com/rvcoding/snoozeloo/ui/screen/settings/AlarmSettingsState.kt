@@ -9,6 +9,6 @@ data class AlarmSettingsState(
     val alarm: Alarm
 ) {
     companion object {
-        val Stub = AlarmSettingsState(Alarm.NewAlarm)
+        val Initial = AlarmSettingsState(Alarm.NewAlarm)
     }
 }

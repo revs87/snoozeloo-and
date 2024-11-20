@@ -15,7 +15,8 @@ internal class AlarmRepositoryImpl(private val dao: AlarmsDao) : AlarmRepository
     override suspend fun updateAlarm(alarmWithId: Alarm) { dao.updateAlarm(alarmWithId.toEntityWithId()) }
     override suspend fun updateAlarmEnabled(id: Int, enabled: Boolean) {
         getAlarm(id)?.let { alarm ->
-            dao.updateAlarm(alarm.copy(enabled = enabled).toEntity())
+            println("Alarm updated: enabled=$enabled")
+            dao.updateAlarm(alarm.copy(enabled = enabled).toEntityWithId())
         }
     }
     override suspend fun deleteAlarm(id: Int) { dao.deleteAlarm(id) }
