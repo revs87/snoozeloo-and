@@ -89,7 +89,7 @@ private fun YourAlarmsNonEmptyScreen(
             }
             itemsIndexed(
                 items = alarms,
-                key = { _, item -> item.id }
+                key = { _, item -> "${item.id}-${item.enabled}" }
             ) { _, item ->
                 SwipeToDeleteContainer(
                     item = item,

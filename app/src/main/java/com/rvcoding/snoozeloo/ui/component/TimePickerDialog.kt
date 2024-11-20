@@ -12,11 +12,7 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.TimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,15 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import com.rvcoding.snoozeloo.domain.model.Time
 import com.rvcoding.snoozeloo.domain.model.toAlarmInfo
 import com.rvcoding.snoozeloo.domain.navigation.Actions
 import com.rvcoding.snoozeloo.ui.screen.settings.AlarmSettingsState
 import com.rvcoding.snoozeloo.ui.theme.Primary
 import com.rvcoding.snoozeloo.ui.theme.TextDisabled
 import com.rvcoding.snoozeloo.ui.theme.TextPrimary
-import java.util.Calendar
-import java.util.TimeZone
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,30 +46,6 @@ fun TimePickerDialog(
             timePickerState.minute,
             timePickerState.isAfternoon
         )
-    }
-
-    var wasAfternoon by remember { mutableStateOf(state.alarm.time.localMeridiem == "PM") }
-    LaunchedEffect(timePickerState.isAfternoon) {
-        if (timePickerState.isAfternoon != wasAfternoon) {
-            val cal = Calendar.getInstance(TimeZone.getDefault())
-            cal.set(Calendar.HOUR_OF_DAY, timePickerState.hour)
-            cal.set(Calendar.MINUTE, timePickerState.minute)
-            cal.set(Calendar.AM_PM, if (timePickerState.isAfternoon) Calendar.PM else Calendar.AM)
-
-            onAction(
-                Actions.AlarmSettings.OnTimeChange(
-                    state.alarm.copy(
-                        time = Time(
-                            utcTime = cal.timeInMillis
-                        )
-                    ),
-                    timePickerState.hour,
-                    timePickerState.minute,
-                    timePickerState.isAfternoon
-                )
-            )
-            wasAfternoon = timePickerState.isAfternoon
-        }
     }
 
     TimePickerDialog(

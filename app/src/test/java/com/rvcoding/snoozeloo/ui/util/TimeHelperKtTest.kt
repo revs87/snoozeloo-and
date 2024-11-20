@@ -196,7 +196,7 @@ class TimeHelperKtTest {
         val expectedHourAndMinute = Pair("10", "00")    // Nov 04 10:00:00 UTC
 
         val actualHourAndMinute = Triple("10", "00", isPM)
-            .fromLocalHoursAndMinutes(is24HourFormat = is24HourFormat)
+            .fromLocalHoursAndMinutes24Format()
             .toLocalHoursAndMinutes(is24Hour = is24HourFormat)
 
         assertEquals(expectedHourAndMinute, actualHourAndMinute)
@@ -209,7 +209,7 @@ class TimeHelperKtTest {
         val expectedHourAndMinute = Pair("12", "00")
 
         val actualHourAndMinute = Triple("12", "00", isPM)
-            .fromLocalHoursAndMinutes(is24HourFormat = is24HourFormat)
+            .fromLocalHoursAndMinutes24Format()
             .toLocalHoursAndMinutes(is24Hour = is24HourFormat)
 
         assertEquals(expectedHourAndMinute, actualHourAndMinute)
@@ -222,7 +222,7 @@ class TimeHelperKtTest {
         val expectedHourAndMinute = Pair("12", "00")
 
         val actualHourAndMinute = Triple("12", "00", isPM)
-            .fromLocalHoursAndMinutes(is24HourFormat = is24HourFormat)
+            .fromLocalHoursAndMinutes24Format()
             .toLocalHoursAndMinutes(is24Hour = is24HourFormat)
 
         assertEquals(expectedHourAndMinute, actualHourAndMinute)
@@ -235,7 +235,7 @@ class TimeHelperKtTest {
         val expectedHourAndMinute = Pair("22", "00")
 
         val actualHourAndMinute = Triple("22", "00", isPM)
-            .fromLocalHoursAndMinutes(is24HourFormat = is24HourFormat)
+            .fromLocalHoursAndMinutes24Format()
             .toLocalHoursAndMinutes(is24Hour = is24HourFormat)
 
         assertEquals(expectedHourAndMinute, actualHourAndMinute)
@@ -248,7 +248,7 @@ class TimeHelperKtTest {
         val expectedHourAndMinute = Pair("00", "00")
 
         val actualHourAndMinute = Triple("00", "00", isPM)
-            .fromLocalHoursAndMinutes(is24HourFormat = is24HourFormat)
+            .fromLocalHoursAndMinutes24Format()
             .toLocalHoursAndMinutes(is24Hour = is24HourFormat)
 
         assertEquals(expectedHourAndMinute, actualHourAndMinute)

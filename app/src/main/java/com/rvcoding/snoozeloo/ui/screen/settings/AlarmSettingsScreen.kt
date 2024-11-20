@@ -132,43 +132,30 @@ private fun TimeContent(
     state: AlarmSettingsState,
     onAction: (Actions.AlarmSettings) -> Unit
 ) {
-    println("currentTime: ${state.alarm.time.utcTime}")
+    println("[TimeContent] currentTime: ${state.alarm.time.utcTime}")
 
     LaunchedEffect(
         key1 = timePickerState.hour,
         key2 = timePickerState.minute,
+        key3 = timePickerState.isAfternoon
     ) {
+        val cal = Calendar.getInstance(TimeZone.getDefault())
+        cal.set(Calendar.HOUR_OF_DAY, timePickerState.hour)
+        cal.set(Calendar.MINUTE, timePickerState.minute)
+        cal.set(Calendar.AM_PM, if (timePickerState.isAfternoon) Calendar.PM else Calendar.AM)
+        println("[TimeContent] TimeDisplay: hrs=${timePickerState.hour} min=${timePickerState.minute} isAfternoon=${timePickerState.isAfternoon} millis=${cal.timeInMillis}")
         onAction.invoke(
             Actions.AlarmSettings.OnTimeChange(
-                state.alarm,
+                state.alarm.copy(
+                    time = Time(
+                        utcTime = cal.timeInMillis
+                    )
+                ),
                 timePickerState.hour,
                 timePickerState.minute,
                 timePickerState.isAfternoon
             )
         )
-    }
-
-    var wasAfternoon by remember { mutableStateOf(state.alarm.time.localMeridiem == "PM") }
-    LaunchedEffect(timePickerState.isAfternoon) {
-        if (timePickerState.isAfternoon != wasAfternoon) {
-            val cal = Calendar.getInstance(TimeZone.getDefault())
-            cal.set(Calendar.HOUR_OF_DAY, timePickerState.hour)
-            cal.set(Calendar.MINUTE, timePickerState.minute)
-            cal.set(Calendar.AM_PM, if (timePickerState.isAfternoon) Calendar.PM else Calendar.AM)
-            onAction.invoke(
-                Actions.AlarmSettings.OnTimeChange(
-                    state.alarm.copy(
-                        time = Time(
-                            utcTime = cal.timeInMillis
-                        )
-                    ),
-                    timePickerState.hour,
-                    timePickerState.minute,
-                    timePickerState.isAfternoon
-                )
-            )
-            wasAfternoon = timePickerState.isAfternoon
-        }
     }
 
     var dialogVisible by remember { mutableStateOf(false) }

@@ -9,7 +9,7 @@ import com.rvcoding.snoozeloo.domain.model.Time
 import com.rvcoding.snoozeloo.domain.navigation.Actions
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
 import com.rvcoding.snoozeloo.ui.navigation.Navigator
-import com.rvcoding.snoozeloo.ui.util.fromLocalHoursAndMinutes
+import com.rvcoding.snoozeloo.ui.util.fromLocalHoursAndMinutes24Format
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
@@ -82,7 +82,7 @@ class AlarmSettingsViewModel(
                                 action.hour.toString(),
                                 action.minute.toString(),
                                 action.isAfternoon
-                            ).fromLocalHoursAndMinutes()
+                            ).fromLocalHoursAndMinutes24Format()
                         )
                     )
                     saveData(AlarmSettingsState(alarm))
