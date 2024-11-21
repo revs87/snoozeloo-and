@@ -28,7 +28,7 @@ data class AlarmInfo(
         )
 
         fun showSleepRecommendation(utcTime: Long) =
-            System.currentTimeMillis() + HOURS_DURATION < utcTime || utcTime.hourInBounds(of = 4, and = 10)
+            System.currentTimeMillis() + HOURS_DURATION < utcTime && utcTime.hourInBounds(of = 4, and = 10)
     }
 }
 
