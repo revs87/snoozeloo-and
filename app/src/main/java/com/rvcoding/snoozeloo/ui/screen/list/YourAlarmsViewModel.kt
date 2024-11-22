@@ -3,6 +3,7 @@ package com.rvcoding.snoozeloo.ui.screen.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rvcoding.snoozeloo.common.DispatchersProvider
+import com.rvcoding.snoozeloo.domain.AlarmScheduler
 import com.rvcoding.snoozeloo.domain.model.toAlarmInfo
 import com.rvcoding.snoozeloo.domain.navigation.Actions
 import com.rvcoding.snoozeloo.domain.navigation.Destination.AlarmSettings
@@ -19,6 +20,7 @@ import kotlinx.coroutines.plus
 class YourAlarmsViewModel(
     private val dispatchersProvider: DispatchersProvider,
     private val alarmRepository: AlarmRepository,
+    private val alarmScheduler: AlarmScheduler,
     private val navigator: Navigator
 ) : ViewModel() {
 
@@ -36,7 +38,16 @@ class YourAlarmsViewModel(
         viewModelScope.launch(dispatchersProvider.io) {
             when (action) {
                 is Actions.YourAlarms.OnAddAlarmButtonClicked ->  navigator.navigate(destination = AlarmSettings(-1))
-                is Actions.YourAlarms.OnAlarmCheckedChange -> alarmRepository.updateAlarmEnabled(id = action.id, enabled = action.checked)
+                is Actions.YourAlarms.OnAlarmCheckedChange -> {
+                    alarmRepository.updateAlarmEnabled(id = action.id, enabled = action.checked)
+                    alarmRepository.getAlarm(id = action.id)?.let { alarm ->
+                        if (alarm.enabled) {
+                            alarmScheduler.schedule(alarm)
+                        } else {
+                            alarmScheduler.cancel(alarm)
+                        }
+                    }
+                }
                 is Actions.YourAlarms.OnAlarmClicked -> navigator.navigate(destination = AlarmSettings(action.id))
                 is Actions.YourAlarms.OnAlarmDelete -> alarmRepository.deleteAlarm(id = action.id)
             }

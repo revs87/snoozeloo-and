@@ -3,8 +3,11 @@ package com.rvcoding.snoozeloo.di
 import androidx.lifecycle.SavedStateHandle
 import com.rvcoding.snoozeloo.common.DispatchersProvider
 import com.rvcoding.snoozeloo.common.StandardDispatchersProvider
+import com.rvcoding.snoozeloo.data.AlarmReceiver
+import com.rvcoding.snoozeloo.data.AndroidAlarmScheduler
 import com.rvcoding.snoozeloo.data.db.AlarmsDatabase
 import com.rvcoding.snoozeloo.data.repository.AlarmRepositoryImpl
+import com.rvcoding.snoozeloo.domain.AlarmScheduler
 import com.rvcoding.snoozeloo.domain.navigation.Destination
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
 import com.rvcoding.snoozeloo.ui.navigation.DefaultNavigator
@@ -44,10 +47,12 @@ val appModule = module {
      * Repositories
      * */
     single<AlarmRepository> { AlarmRepositoryImpl(get()) }
+    single<AlarmReceiver> { AlarmReceiver() }
+    single<AlarmScheduler> { AndroidAlarmScheduler(get()) }
 
     /**
      * ViewModels
      * */
-    viewModel { YourAlarmsViewModel(get(), get(), get()) }
-    viewModel { AlarmSettingsViewModel(get(), get(), get(), SavedStateHandle()) }
+    viewModel { YourAlarmsViewModel(get(), get(), get(), get()) }
+    viewModel { AlarmSettingsViewModel(get(), get(), get(), get(), SavedStateHandle()) }
 }

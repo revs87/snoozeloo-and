@@ -14,6 +14,7 @@ import com.rvcoding.snoozeloo.ui.util.nextLocalMidnightInUtc
 import com.rvcoding.snoozeloo.ui.util.timeLeftAsString
 import com.rvcoding.snoozeloo.ui.util.timeWithMeridiemAsString
 import com.rvcoding.snoozeloo.ui.util.toLocalHoursAndMinutes
+import com.rvcoding.snoozeloo.ui.util.truncateToMinute
 import kotlinx.serialization.Serializable
 
 
@@ -42,7 +43,7 @@ data class Time(
     val localMeridiem: String = meridianAsString(utcTime)
 ) {
     companion object {
-        fun base() = Time(utcTime = nextLocalMidnightInUtc(), isInitial = true)
+        fun base() = Time(utcTime = nextLocalMidnightInUtc().truncateToMinute(), isInitial = true)
         fun from(utcTime: Long) = Time(utcTime)
     }
 }
@@ -55,7 +56,6 @@ fun Alarm.toAlarmInfo(): AlarmInfo = AlarmInfo(
         true -> TimeFormat.Time24(hours = this.time.localHours, minutes = this.time.localMinutes)
         false -> TimeFormat.Time12(hours = this.time.localHours, minutes = this.time.localMinutes, meridiem = this.time.localMeridiem)
     },
-//    timeLeft = StringResource(R.string.alarm_time_left, arrayOf(timeLeftAsString(this.time.utcTime.nextAlarmTime())))
     timeLeft = if (showSleepRecommendation(this.time.utcTime)) {
         StringResource(
             R.string.alarm_recommendation, arrayOf(

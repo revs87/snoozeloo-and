@@ -86,7 +86,7 @@ fun Long.hourInBounds(of: Int, and: Int): Boolean {
 }
 
 fun Long.toLocalHoursAndMinutes(is24Hour: Boolean): Pair<String, String> {
-    val instant = java.time.Instant.ofEpochMilli(this)
+    val instant = java.time.Instant.ofEpochMilli(this.truncateToMinute())
     val localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
     val formatter = DateTimeFormatter.ofPattern("${hoursFormat(is24Hour)}:${minutesFormat()}")
     return localDateTime.format(formatter).split(":").let { it[0] to it[1] }
@@ -98,6 +98,8 @@ fun Triple<String, String, Boolean>.fromLocalHoursAndMinutes24Format(): Long {
     calendar.set(Calendar.HOUR_OF_DAY, hours.toInt())
     println("[TimeContent] Calendar: ${calendar.get(Calendar.HOUR_OF_DAY)}")
     calendar.set(Calendar.MINUTE, minutes.toInt())
+    calendar.set(Calendar.SECOND, 0)
+    calendar.set(Calendar.MILLISECOND, 0)
     calendar.set(Calendar.AM_PM, if (isPM) Calendar.PM else Calendar.AM)
     return calendar.timeInMillis
 }
@@ -111,6 +113,14 @@ fun nextLocalMidnightInUtc(
     val tomorrow = today.plus(1, DateTimeUnit.DAY)
     val midnight = LocalDateTime(tomorrow, LocalTime(0, 0))
     return midnight.toInstant(tz).toEpochMilliseconds()
+}
+
+fun Long.truncateToMinute(): Long {
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = this
+    calendar.set(Calendar.SECOND, 0)
+    calendar.set(Calendar.MILLISECOND, 0)
+    return calendar.timeInMillis
 }
 
 fun stringAsUtcTime(time: String, is24HourFormat: Boolean): Long = 1731738988701

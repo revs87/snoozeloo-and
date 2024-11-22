@@ -253,4 +253,11 @@ class TimeHelperKtTest {
 
         assertEquals(expectedHourAndMinute, actualHourAndMinute)
     }
+
+    @Test
+    fun truncateToMinute() {
+        val alarmTime = 1730804512344  // Nov 05 11:01:52.344 UTC
+        val expected = 1730804460000   // Nov 05 11:01:00.000 UTC
+        assertEquals(expected, alarmTime.truncateToMinute())
+    }
 }

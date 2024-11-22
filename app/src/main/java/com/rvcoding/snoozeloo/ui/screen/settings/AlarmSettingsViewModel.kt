@@ -4,12 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rvcoding.snoozeloo.common.DispatchersProvider
+import com.rvcoding.snoozeloo.domain.AlarmScheduler
 import com.rvcoding.snoozeloo.domain.model.Alarm
 import com.rvcoding.snoozeloo.domain.model.Time
 import com.rvcoding.snoozeloo.domain.navigation.Actions
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
 import com.rvcoding.snoozeloo.ui.navigation.Navigator
 import com.rvcoding.snoozeloo.ui.util.fromLocalHoursAndMinutes24Format
+import com.rvcoding.snoozeloo.ui.util.truncateToMinute
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
@@ -29,6 +31,7 @@ import kotlinx.serialization.json.Json
 class AlarmSettingsViewModel(
     private val dispatchersProvider: DispatchersProvider,
     private val alarmRepository: AlarmRepository,
+    private val alarmScheduler: AlarmScheduler,
     private val navigator: Navigator,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -67,9 +70,20 @@ class AlarmSettingsViewModel(
                 is Actions.AlarmSettings.Save -> {
                     println("Saving: id=${action.alarm.id} hour=${action.alarm.time.localHours} minute=${action.alarm.time.localMinutes} meridiem=${action.alarm.time.localMeridiem}")
                     action.alarm.let {
-                        if (it.id == -1) alarmRepository.addAlarm(it.copy(enabled = true))
-                        else alarmRepository.updateAlarm(it.copy(enabled = true))
+                        if (it.id == -1) {
+                            alarmRepository.addAlarm(it.copy(
+                                enabled = true,
+                                time = it.time.copy(utcTime = it.time.utcTime.truncateToMinute()
+                                )
+                            ))
+                        }
+                        else alarmRepository.updateAlarm(it.copy(
+                                enabled = true,
+                                time = it.time.copy(utcTime = it.time.utcTime.truncateToMinute()
+                                )
+                            ))
                     }
+                    alarmScheduler.schedule(action.alarm)
                     navigator.navigateUp()
                 }
                 is Actions.AlarmSettings.Load -> {
