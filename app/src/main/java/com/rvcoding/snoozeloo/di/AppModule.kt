@@ -5,6 +5,7 @@ import com.rvcoding.snoozeloo.common.DispatchersProvider
 import com.rvcoding.snoozeloo.common.StandardDispatchersProvider
 import com.rvcoding.snoozeloo.data.AlarmReceiver
 import com.rvcoding.snoozeloo.data.AndroidAlarmScheduler
+import com.rvcoding.snoozeloo.data.BootCompletedReceiver
 import com.rvcoding.snoozeloo.data.db.AlarmsDatabase
 import com.rvcoding.snoozeloo.data.repository.AlarmRepositoryImpl
 import com.rvcoding.snoozeloo.domain.AlarmScheduler
@@ -47,6 +48,7 @@ val appModule = module {
      * Repositories
      * */
     single<AlarmRepository> { AlarmRepositoryImpl(get()) }
+    single<BootCompletedReceiver> { BootCompletedReceiver() }
     single<AlarmReceiver> { AlarmReceiver() }
     single<AlarmScheduler> { AndroidAlarmScheduler(get()) }
 
