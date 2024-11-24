@@ -73,14 +73,12 @@ class AlarmSettingsViewModel(
                         if (it.id == -1) {
                             alarmRepository.addAlarm(it.copy(
                                 enabled = true,
-                                time = it.time.copy(utcTime = it.time.utcTime.truncateToMinute()
-                                )
+                                time = it.time.copy(utcTime = it.time.utcTime.truncateToMinute())
                             ))
                         }
                         else alarmRepository.updateAlarm(it.copy(
                                 enabled = true,
-                                time = it.time.copy(utcTime = it.time.utcTime.truncateToMinute()
-                                )
+                                time = it.time.copy(utcTime = it.time.utcTime.truncateToMinute())
                             ))
                     }
                     alarmScheduler.schedule(action.alarm)

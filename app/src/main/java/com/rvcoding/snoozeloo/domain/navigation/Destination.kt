@@ -10,5 +10,5 @@ sealed interface Destination {
     data class AlarmSettings(val id: Int): Destination
 
     @Serializable
-    data object AlarmTrigger: Destination
+    data class AlarmTrigger(val id: Int): Destination
 }

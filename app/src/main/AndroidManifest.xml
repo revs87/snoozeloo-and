@@ -26,6 +26,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <data android:scheme="https"/>
+                <data android:host="rvcoding.com"/>
+                <data android:host="www.rvcoding.com"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
         </activity>
         <receiver android:name=".data.AlarmReceiver" />
         <receiver android:name=".data.BootCompletedReceiver" android:exported="false">

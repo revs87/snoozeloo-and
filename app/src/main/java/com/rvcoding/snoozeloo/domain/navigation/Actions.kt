@@ -26,6 +26,7 @@ sealed interface Actions {
     }
 
     sealed interface AlarmTrigger : Actions {
-        data object TurnOff : AlarmTrigger
+        data class Load(val alarmId: Int) : AlarmTrigger
+        data class TurnOff(val alarmId: Int) : AlarmTrigger
     }
 }
