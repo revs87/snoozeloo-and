@@ -6,4 +6,5 @@
     <string name="alarm_time_left_less_than_minute">Alarm in less than a minute</string>
     <string name="alarm_recommendation">Go to bed at %s to get %sh of sleep</string>
     <string name="save">Save</string>
+    <string name="turn_off">Turn off</string>
 </resources>

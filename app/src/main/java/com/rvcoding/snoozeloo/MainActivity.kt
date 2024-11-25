@@ -12,7 +12,6 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
@@ -23,6 +22,7 @@ import com.rvcoding.snoozeloo.ui.navigation.NavigationRoot
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurface
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurfaceDark
 import com.rvcoding.snoozeloo.ui.theme.SnoozelooTheme
+import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPadding),
-                        color = MaterialTheme.colorScheme.background
+                        color = if (isDarkTheme()) BackgroundSurfaceDark else BackgroundSurface
                     ) {
                         Box(modifier = Modifier.fillMaxSize()) {
                             NavigationRoot()

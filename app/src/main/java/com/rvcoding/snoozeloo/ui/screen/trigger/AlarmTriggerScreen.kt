@@ -1,10 +1,11 @@
 package com.rvcoding.snoozeloo.ui.screen.trigger
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -26,14 +28,15 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navOptions
 import com.rvcoding.snoozeloo.R
+import com.rvcoding.snoozeloo.domain.model.Alarm
 import com.rvcoding.snoozeloo.domain.model.TimeFormatPreference
 import com.rvcoding.snoozeloo.domain.navigation.Actions
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurface
@@ -42,6 +45,7 @@ import com.rvcoding.snoozeloo.ui.theme.GreyDisabled
 import com.rvcoding.snoozeloo.ui.theme.GreyDisabledDark
 import com.rvcoding.snoozeloo.ui.theme.Primary
 import com.rvcoding.snoozeloo.ui.theme.PrimaryDark
+import com.rvcoding.snoozeloo.ui.theme.TextPrimary
 import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -75,32 +79,62 @@ fun AlarmTriggerScreen(
     onAction: (Actions.AlarmTrigger) -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         Icon(
             modifier = Modifier.size(60.dp),
             imageVector = ImageVector.vectorResource(id = R.drawable.alarm_blue),
-            contentDescription = null
+            contentDescription = null,
+            tint = Primary
         )
+        Spacer(modifier = Modifier.padding(16.dp))
         Row(
             Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Bottom
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "${state.alarm.time.localHours}:${state.alarm.time.localMinutes}"
+                text = "${state.alarm.time.localHours}:${state.alarm.time.localMinutes}",
+                fontWeight = FontWeight.Medium,
+                style = MaterialTheme.typography.displayLarge.copy(
+                    color = Primary,
+                    fontSize = 80.sp,
+                    lineHeightStyle = LineHeightStyle(
+                        alignment = LineHeightStyle.Alignment.Center,
+                        trim = LineHeightStyle.Trim.Both
+                    )
+                ),
             )
             if (!TimeFormatPreference.is24HourFormat()) {
                 Text(
-                    text = state.alarm.time.localMeridiem
+                    text = state.alarm.time.localMeridiem,
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.displayLarge.copy(
+                        fontSize = 20.sp,
+                        baselineShift = BaselineShift.Subscript,
+                        color = Primary,
+                    )
                 )
             }
         }
+        Spacer(modifier = Modifier.padding(8.dp))
         Text(
-            text = state.alarm.name,
+            text = state.alarm.name.uppercase(),
+            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.displayLarge.copy(
+                fontSize = 20.sp,
+                color = TextPrimary,
+                lineHeightStyle = LineHeightStyle(
+                    alignment = LineHeightStyle.Alignment.Center,
+                    trim = LineHeightStyle.Trim.Both
+                )
+            )
         )
+        Spacer(modifier = Modifier.padding(16.dp))
         TextButton(
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier.fillMaxWidth(0.7f),
             enabled = true,
             contentPadding = PaddingValues(),
             colors = ButtonColors(
@@ -115,9 +149,9 @@ fun AlarmTriggerScreen(
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                text = stringResource(R.string.save),
+                text = stringResource(R.string.turn_off),
                 color = if (isDarkTheme()) BackgroundSurfaceDark else BackgroundSurface,
-                fontSize = 16.sp,
+                fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.SemiBold,
                 style = LocalTextStyle.current.merge(
@@ -134,4 +168,13 @@ fun AlarmTriggerScreen(
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AlarmTriggerScreenPreview() {
+    AlarmTriggerScreen(
+        state = AlarmTriggerState(Alarm.NewAlarm),
+        onAction = {}
+    )
 }
