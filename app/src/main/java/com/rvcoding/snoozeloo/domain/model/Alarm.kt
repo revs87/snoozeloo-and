@@ -8,6 +8,7 @@ import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.HOURS
 import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.HOURS_DURATION
 import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.showSleepRecommendation
 import com.rvcoding.snoozeloo.ui.screen.list.model.TimeFormat
+import com.rvcoding.snoozeloo.ui.util.isLessThanAMinute
 import com.rvcoding.snoozeloo.ui.util.meridianAsString
 import com.rvcoding.snoozeloo.ui.util.nextAlarmTime
 import com.rvcoding.snoozeloo.ui.util.nextLocalMidnightInUtc
@@ -56,16 +57,18 @@ fun Alarm.toAlarmInfo(): AlarmInfo = AlarmInfo(
         true -> TimeFormat.Time24(hours = this.time.localHours, minutes = this.time.localMinutes)
         false -> TimeFormat.Time12(hours = this.time.localHours, minutes = this.time.localMinutes, meridiem = this.time.localMeridiem)
     },
-    timeLeft = if (showSleepRecommendation(this.time.utcTime)) {
-        StringResource(
-            R.string.alarm_recommendation, arrayOf(
-            timeWithMeridiemAsString(
-                utcTime = this.time.utcTime - HOURS_DURATION,
-                is24HourFormat = TimeFormatPreference.is24HourFormat()
-            ),
-            HOURS
-        ))
-    } else {
-        StringResource(R.string.alarm_time_left, arrayOf(timeLeftAsString(this.time.utcTime.nextAlarmTime())))
+    timeLeft = when {
+        showSleepRecommendation(this.time.utcTime) -> {
+            StringResource(
+                R.string.alarm_recommendation, arrayOf(
+                    timeWithMeridiemAsString(
+                        utcTime = this.time.utcTime - HOURS_DURATION,
+                        is24HourFormat = TimeFormatPreference.is24HourFormat()
+                    ),
+                    HOURS
+                ))
+        }
+        this.time.utcTime.isLessThanAMinute() -> StringResource(R.string.alarm_time_left_less_than_minute)
+        else -> StringResource(R.string.alarm_time_left, arrayOf(timeLeftAsString(this.time.utcTime.nextAlarmTime())))
     }
 )

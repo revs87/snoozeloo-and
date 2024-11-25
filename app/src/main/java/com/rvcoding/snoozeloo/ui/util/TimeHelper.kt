@@ -50,13 +50,11 @@ private fun durationAsStr(duration: Duration): String {
         val days = duration.inWholeDays
         val hours = duration.inWholeHours % 24
         val minutes = duration.inWholeMinutes % 60
-        val seconds = duration.inWholeSeconds % 60
 
         buildString {
             if (days > 0) append("${days}d ")
             if (hours > 0) append("${hours}h ")
             if (minutes > 0) append("${minutes}min ")
-            if (days == 0L && hours == 0L && seconds > 0L) append("${seconds}sec")
         }.trim()
     }
 }
@@ -78,6 +76,20 @@ fun Long.nextAlarmTime(utcNow: Long = System.currentTimeMillis()) : Long {
     }
 
     return alarm.timeInMillis
+}
+
+fun Long.isLessThanAMinute(utcNow: Long = System.currentTimeMillis()): Boolean {
+    val alarm = Calendar.getInstance()
+    alarm.timeInMillis = this.truncateToMinute()
+
+    val now = Calendar.getInstance()
+    now.timeInMillis = utcNow
+
+    return (now.get(Calendar.YEAR) == alarm.get(Calendar.YEAR)
+            && now.get(Calendar.MONTH) == alarm.get(Calendar.MONTH)
+            && now.get(Calendar.DAY_OF_MONTH) == alarm.get(Calendar.DAY_OF_MONTH)
+            && now.get(Calendar.HOUR_OF_DAY) == alarm.get(Calendar.HOUR_OF_DAY)
+            && now.get(Calendar.MINUTE) + 1 == alarm.get(Calendar.MINUTE))
 }
 
 fun Long.hourInBounds(of: Int, and: Int): Boolean {
@@ -122,5 +134,3 @@ fun Long.truncateToMinute(): Long {
     calendar.set(Calendar.MILLISECOND, 0)
     return calendar.timeInMillis
 }
-
-fun stringAsUtcTime(time: String, is24HourFormat: Boolean): Long = 1731738988701
