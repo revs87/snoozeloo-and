@@ -76,10 +76,15 @@ class AlarmSettingsViewModel(
                                 time = it.time.copy(utcTime = it.time.utcTime.truncateToMinute())
                             ))
                         }
-                        else alarmRepository.updateAlarm(it.copy(
+                        else {
+                            alarmRepository.getAlarm(action.alarm.id)?.let {
+                                alarmScheduler.cancel(it)
+                            }
+                            alarmRepository.updateAlarm(it.copy(
                                 enabled = true,
                                 time = it.time.copy(utcTime = it.time.utcTime.truncateToMinute())
                             ))
+                        }
                     }
                     alarmScheduler.schedule(action.alarm)
                     navigator.navigateUp()
