@@ -40,7 +40,14 @@ class AlarmTriggerViewModel(
             }
             is Actions.AlarmTrigger.TurnOff -> {
                 viewModelScope.launch {
-                    navigator.navigate(destination = Destination.YourAlarms)
+                    navigator.navigate(
+                        destination = Destination.YourAlarms,
+                        navOptions = {
+                            popUpTo(Destination.YourAlarms) {
+                                inclusive = true
+                            }
+                        }
+                    )
                 }
             }
         }

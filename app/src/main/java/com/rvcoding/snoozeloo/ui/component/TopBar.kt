@@ -207,7 +207,7 @@ sealed interface TopBar {
         val rightButtonTextRes: Int = R.string.save,
         val leftButtonIconRes: ImageVector = Icons.Rounded.Close,
         val leftButtonIconTint: Color = if (isDarkTheme) BackgroundSurfaceDark else BackgroundSurface,
-        val leftButtonColor: Color = if (isDarkTheme) GreyDisabledDark else GreyDisabled,
+        val leftButtonColor: Color = if (isDarkTheme) PrimaryDark else Primary,
         val rightButtonTextTint: Color = if (isDarkTheme) BackgroundSurfaceDark else BackgroundSurface,
         val rightButtonColor: Color = if (isDarkTheme) PrimaryDark else Primary,
     ) : TopBar

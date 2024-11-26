@@ -15,6 +15,7 @@ import com.rvcoding.snoozeloo.ui.navigation.DefaultNavigator
 import com.rvcoding.snoozeloo.ui.navigation.Navigator
 import com.rvcoding.snoozeloo.ui.screen.list.YourAlarmsViewModel
 import com.rvcoding.snoozeloo.ui.screen.settings.AlarmSettingsViewModel
+import com.rvcoding.snoozeloo.ui.screen.trigger.AlarmTriggerViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import org.koin.android.ext.koin.androidContext
@@ -57,4 +58,5 @@ val appModule = module {
      * */
     viewModel { YourAlarmsViewModel(get(), get(), get(), get()) }
     viewModel { AlarmSettingsViewModel(get(), get(), get(), get(), SavedStateHandle()) }
+    viewModel { AlarmTriggerViewModel(get(), get()) }
 }

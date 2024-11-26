@@ -1,5 +1,6 @@
 package com.rvcoding.snoozeloo.ui.util
 
+import com.rvcoding.snoozeloo.domain.model.TimeFormatPreference
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
@@ -35,7 +36,7 @@ private fun timeAsStringInternal(utcTime: Long, format: String): String {
     return formatter.format(zonedDateTime.toJavaLocalDateTime())
 }
 
-fun timeAsString(utcTime: Long, is24HourFormat: Boolean): String = timeAsStringInternal(utcTime, timeFormat(is24HourFormat))
+fun timeAsString(utcTime: Long, is24HourFormat: Boolean = TimeFormatPreference.is24HourFormat()): String = timeAsStringInternal(utcTime, timeFormat(is24HourFormat))
 fun timeWithMeridiemAsString(utcTime: Long, is24HourFormat: Boolean): String = timeAsStringInternal(utcTime, timeFormat(is24HourFormat)) + if (is24HourFormat) "" else " " + meridianAsString(utcTime)
 fun meridianAsString(utcTime: Long): String = timeAsStringInternal(utcTime, meridiemFormat()).uppercase()
 fun timeLeftAsString(utcTime: Long, utcNow: Long = System.currentTimeMillis()): String {

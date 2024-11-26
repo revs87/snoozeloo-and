@@ -34,35 +34,35 @@ class MainActivity : ComponentActivity() {
             setKeepOnScreenCondition {
                 !vm.isReady.value
             }
-            setOnExitAnimationListener { screen ->
-                enableEdgeToEdge(
-                    statusBarStyle = SystemBarStyle.auto(
-                        lightScrim = BackgroundSurface.toArgb(),
-                        darkScrim = BackgroundSurfaceDark.toArgb()
-                    )
-                )
-                val zoomX = ObjectAnimator.ofFloat(
-                    screen.iconView,
-                    View.SCALE_X,
-                    0.5f,
-                    0.0f
-                )
-                val zoomY = ObjectAnimator.ofFloat(
-                    screen.iconView,
-                    View.SCALE_Y,
-                    0.5f,
-                    0.0f
-                )
-                zoomX.interpolator = OvershootInterpolator()
-                zoomX.duration = 500L
-                zoomX.doOnEnd { screen.remove() }
-                zoomY.interpolator = OvershootInterpolator()
-                zoomY.duration = 500L
-                zoomY.doOnEnd { screen.remove() }
-
-                zoomX.start()
-                zoomY.start()
-            }
+//            setOnExitAnimationListener { screen ->
+//                enableEdgeToEdge(
+//                    statusBarStyle = SystemBarStyle.auto(
+//                        lightScrim = BackgroundSurface.toArgb(),
+//                        darkScrim = BackgroundSurfaceDark.toArgb()
+//                    )
+//                )
+//                val zoomX = ObjectAnimator.ofFloat(
+//                    screen.iconView,
+//                    View.SCALE_X,
+//                    0.5f,
+//                    0.0f
+//                )
+//                val zoomY = ObjectAnimator.ofFloat(
+//                    screen.iconView,
+//                    View.SCALE_Y,
+//                    0.5f,
+//                    0.0f
+//                )
+//                zoomX.interpolator = OvershootInterpolator()
+//                zoomX.duration = 500L
+//                zoomX.doOnEnd { screen.remove() }
+//                zoomY.interpolator = OvershootInterpolator()
+//                zoomY.duration = 500L
+//                zoomY.doOnEnd { screen.remove() }
+//
+//                zoomX.start()
+//                zoomY.start()
+//            }
         }
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(

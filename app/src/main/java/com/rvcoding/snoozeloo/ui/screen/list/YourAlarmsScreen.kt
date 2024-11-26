@@ -1,5 +1,10 @@
 package com.rvcoding.snoozeloo.ui.screen.list
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,13 +15,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rvcoding.snoozeloo.R
 import com.rvcoding.snoozeloo.domain.model.Alarm
@@ -33,10 +44,14 @@ import com.rvcoding.snoozeloo.ui.component.AlarmCard
 import com.rvcoding.snoozeloo.ui.component.SwipeToDeleteContainer
 import com.rvcoding.snoozeloo.ui.component.TopBar
 import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo
+import com.rvcoding.snoozeloo.ui.theme.BackgroundCard
+import com.rvcoding.snoozeloo.ui.theme.BackgroundCardDark
 import com.rvcoding.snoozeloo.ui.theme.Primary
 import com.rvcoding.snoozeloo.ui.theme.PrimaryDark
 import com.rvcoding.snoozeloo.ui.theme.TextPrimary
 import com.rvcoding.snoozeloo.ui.theme.TextPrimaryDark
+import com.rvcoding.snoozeloo.ui.theme.TextTertiary
+import com.rvcoding.snoozeloo.ui.theme.TextTertiaryDark
 import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -69,10 +84,52 @@ private fun YourAlarmsScreen(
             YourAlarmsNonEmptyScreen(state.alarms, onAction)
         }
 
-        AddAlarmButton(
-            modifier = Modifier.align(Alignment.BottomCenter),
-            onAction = { onAction.invoke(Actions.YourAlarms.OnAddAlarmButtonClicked(alarm = Alarm.NewAlarm)) }
-        )
+        val context = LocalContext.current
+        var hasPermission by remember {
+            mutableStateOf(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_GRANTED
+                } else {
+                    true
+                }
+            )
+        }
+
+        val permissionLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+        ) { isGranted ->
+            hasPermission = isGranted
+        }
+
+        if (!hasPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Button(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (isDarkTheme()) PrimaryDark else Primary,
+                    contentColor = if (isDarkTheme()) BackgroundCardDark else BackgroundCard
+                ) ,
+                onClick = {
+                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            ) {
+                Text(
+                    text = stringResource(R.string.request_permission),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    textAlign = TextAlign.Center,
+                    color = if (isDarkTheme()) TextTertiaryDark else TextTertiary,
+                )
+            }
+        } else {
+            AddAlarmButton(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                onAction = { onAction.invoke(Actions.YourAlarms.OnAddAlarmButtonClicked(alarm = Alarm.NewAlarm)) }
+            )
+        }
+
     }
 }
 

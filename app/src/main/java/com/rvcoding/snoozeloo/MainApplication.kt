@@ -18,3 +18,4 @@ class MainApplication : Application() {
         }
     }
 }
+const val DEEP_LINK_DOMAIN = "rvcoding.com"
