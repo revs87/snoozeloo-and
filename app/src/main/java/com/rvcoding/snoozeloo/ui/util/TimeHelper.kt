@@ -17,6 +17,7 @@ import java.util.Locale
 import kotlin.time.Duration
 
 
+private fun dateFormat(): String = "dd/MM"
 private fun timeFormat(is24HourFormat: Boolean): String = when (is24HourFormat) {
     true -> "HH:mm"
     false -> "hh:mm"
@@ -37,7 +38,8 @@ private fun timeAsStringInternal(utcTime: Long, format: String): String {
 }
 
 fun timeAsString(utcTime: Long, is24HourFormat: Boolean = TimeFormatPreference.is24HourFormat()): String = timeAsStringInternal(utcTime, timeFormat(is24HourFormat))
-fun timeWithMeridiemAsString(utcTime: Long, is24HourFormat: Boolean): String = timeAsStringInternal(utcTime, timeFormat(is24HourFormat)) + if (is24HourFormat) "" else " " + meridianAsString(utcTime)
+fun timeWithMeridiemAsString(utcTime: Long, is24HourFormat: Boolean = TimeFormatPreference.is24HourFormat()): String = timeAsStringInternal(utcTime, timeFormat(is24HourFormat)) + if (is24HourFormat) "" else " " + meridianAsString(utcTime)
+fun timeWithMeridiemAndDateAsString(utcTime: Long, is24HourFormat: Boolean = TimeFormatPreference.is24HourFormat()): String = timeAsStringInternal(utcTime, timeFormat(is24HourFormat)) + if (is24HourFormat) "" else " " + meridianAsString(utcTime) + " (${timeAsStringInternal(utcTime, dateFormat())})"
 fun meridianAsString(utcTime: Long): String = timeAsStringInternal(utcTime, meridiemFormat()).uppercase()
 fun timeLeftAsString(utcTime: Long, utcNow: Long = System.currentTimeMillis()): String {
     val now = Instant.fromEpochMilliseconds(utcNow) // By utcNow means we're in the past of utcTime

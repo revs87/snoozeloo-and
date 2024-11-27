@@ -17,7 +17,7 @@ import com.rvcoding.snoozeloo.MainActivity
 import com.rvcoding.snoozeloo.R
 import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.ALARM_ID_EXTRA_KEY
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
-import com.rvcoding.snoozeloo.ui.util.timeAsString
+import com.rvcoding.snoozeloo.ui.util.timeWithMeridiemAsString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
@@ -87,7 +87,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.alarm_blue)
                 .setContentTitle(title)
-                .setContentText(timeAsString(alarmTime))
+                .setContentText(timeWithMeridiemAsString(alarmTime))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setAutoCancel(true)
                 .setFullScreenIntent(alarmPendingIntent, true)
