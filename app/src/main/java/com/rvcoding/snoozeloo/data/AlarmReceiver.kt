@@ -15,6 +15,7 @@ import androidx.core.content.getSystemService
 import com.rvcoding.snoozeloo.DEEP_LINK_DOMAIN
 import com.rvcoding.snoozeloo.MainActivity
 import com.rvcoding.snoozeloo.R
+import com.rvcoding.snoozeloo.domain.AlarmScheduler
 import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.ALARM_ID_EXTRA_KEY
 import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.IS_ALARM_TRIGGERED_EXTRA_KEY
 import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.IS_ALARM_TURN_OFF_EXTRA_KEY
@@ -27,6 +28,7 @@ import org.koin.java.KoinJavaComponent.inject
 
 class AlarmReceiver : BroadcastReceiver() {
     private val alarmRepository: AlarmRepository by inject(AlarmRepository::class.java)
+    private val alarmScheduler: AlarmScheduler by inject(AlarmScheduler::class.java)
     private val coScope: CoroutineScope by inject(CoroutineScope::class.java)
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -61,6 +63,8 @@ class AlarmReceiver : BroadcastReceiver() {
                             alarmTurnOffIntent = alarmTurnOffIntent
                         )
                     }
+
+                    alarmScheduler.playRingtone()
                 }
             }
         }
@@ -76,11 +80,11 @@ class AlarmReceiver : BroadcastReceiver() {
     ) {
         val alarmTriggerPendingIntent = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(alarmTriggerIntent)
-            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
         }
         val alarmTurnOffPendingIntent = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(alarmTurnOffIntent)
-            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            getPendingIntent(1, PendingIntent.FLAG_IMMUTABLE)
         }
 
         context.startActivity(alarmTriggerIntent)

@@ -72,18 +72,15 @@ class MainActivity : ComponentActivity() {
 
     private fun setScreenAsTurnOff(isTurnOff: Boolean, alarmId: Int) {
         if (isTurnOff) {
-            alarmScheduler.cancel(alarmId)
             alarmScheduler.removeNotification(alarmId)
+            alarmScheduler.cancel(alarmId)
             alarmScheduler.stopRingtone()
             finish()
         }
     }
 
     private fun setScreenAsAlarm(isTriggered: Boolean = false) {
-        if (isTriggered) {
-            alarmScheduler.playRingtone()
-            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        }
+        if (isTriggered) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setShowWhenLocked(isTriggered)
         setTurnScreenOn(isTriggered)
     }
