@@ -15,19 +15,28 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.rvcoding.snoozeloo.domain.AlarmScheduler
+import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.ALARM_ID_EXTRA_KEY
 import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.IS_ALARM_TRIGGERED_EXTRA_KEY
+import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.IS_ALARM_TURN_OFF_EXTRA_KEY
 import com.rvcoding.snoozeloo.ui.navigation.NavigationRoot
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurface
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurfaceDark
 import com.rvcoding.snoozeloo.ui.theme.SnoozelooTheme
 import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
+import org.koin.java.KoinJavaComponent.inject
 
 class MainActivity : ComponentActivity() {
 
     private val vm: MainViewModel by viewModels()
+    private val alarmScheduler: AlarmScheduler by inject(AlarmScheduler::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val isTurnOff = intent?.getBooleanExtra(IS_ALARM_TURN_OFF_EXTRA_KEY, false) == true
+        val alarmId = intent?.getIntExtra(ALARM_ID_EXTRA_KEY, -1) ?: -1
+        setScreenAsTurnOff(isTurnOff, alarmId)
 
         val isTriggered = intent?.getBooleanExtra(IS_ALARM_TRIGGERED_EXTRA_KEY, false) == true
         setScreenAsAlarm(isTriggered)
@@ -61,7 +70,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    fun setScreenAsAlarm(isTriggered: Boolean = false) {
+    private fun setScreenAsTurnOff(isTurnOff: Boolean, alarmId: Int) {
+        if (isTurnOff) {
+            alarmScheduler.cancel(alarmId)
+            alarmScheduler.removeNotification(alarmId)
+            finish()
+        }
+    }
+
+    private fun setScreenAsAlarm(isTriggered: Boolean = false) {
         if (isTriggered) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setShowWhenLocked(isTriggered)
         setTurnScreenOn(isTriggered)

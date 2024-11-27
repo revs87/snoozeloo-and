@@ -48,11 +48,11 @@ class AndroidAlarmScheduler(
         }
     }
 
-    override fun cancel(alarm: Alarm) {
+    override fun cancel(alarmId: Int) {
         alarmManager.cancel(
             PendingIntent.getBroadcast(
                 context,
-                alarm.id,
+                alarmId,
                 Intent(context, AlarmReceiver::class.java),
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )

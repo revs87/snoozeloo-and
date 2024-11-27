@@ -17,6 +17,7 @@ import com.rvcoding.snoozeloo.MainActivity
 import com.rvcoding.snoozeloo.R
 import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.ALARM_ID_EXTRA_KEY
 import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.IS_ALARM_TRIGGERED_EXTRA_KEY
+import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.IS_ALARM_TURN_OFF_EXTRA_KEY
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
 import com.rvcoding.snoozeloo.ui.util.timeWithMeridiemAsString
 import kotlinx.coroutines.CoroutineScope
@@ -37,20 +38,27 @@ class AlarmReceiver : BroadcastReceiver() {
             alarmRepository.getAlarm(alarmId)?.let { alarm ->
                 println("[AlarmReceiver] Alarm: $alarm")
                 context?.let {
-                    val alarmActivityIntent = Intent(context, MainActivity::class.java).apply {
+                    val alarmTriggerIntent = Intent(context, MainActivity::class.java).apply {
                         data = android.net.Uri.parse("https://$DEEP_LINK_DOMAIN/$alarmId")
                         flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TOP
                         putExtra(IS_ALARM_TRIGGERED_EXTRA_KEY, true)
                     }
+                    val alarmTurnOffIntent = Intent(context, MainActivity::class.java).apply {
+                        data = android.net.Uri.parse("https://$DEEP_LINK_DOMAIN/$alarmId")
+                        flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TOP
+                        putExtra(IS_ALARM_TURN_OFF_EXTRA_KEY, true)
+                        putExtra(ALARM_ID_EXTRA_KEY, alarmId)
+                    }
 
                     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-                        context.startActivity(alarmActivityIntent)
+                        context.startActivity(alarmTriggerIntent)
                     } else {
                         showNotification(
                             context,
                             alarmId = alarmId,
                             alarmTime = alarm.time.utcTime,
-                            alarmActivityIntent = alarmActivityIntent
+                            alarmTriggerIntent = alarmTriggerIntent,
+                            alarmTurnOffIntent = alarmTurnOffIntent
                         )
                     }
                 }
@@ -63,14 +71,19 @@ class AlarmReceiver : BroadcastReceiver() {
         title: String = "Alarm Triggered",
         alarmId: Int = -1,
         alarmTime: Long = 0L,
-        alarmActivityIntent: Intent
+        alarmTriggerIntent: Intent,
+        alarmTurnOffIntent: Intent
     ) {
-        val alarmPendingIntent = TaskStackBuilder.create(context).run {
-            addNextIntentWithParentStack(alarmActivityIntent)
+        val alarmTriggerPendingIntent = TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(alarmTriggerIntent)
+            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        }
+        val alarmTurnOffPendingIntent = TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(alarmTurnOffIntent)
             getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
 
-        context.startActivity(alarmActivityIntent)
+        context.startActivity(alarmTriggerIntent)
 
         val channel = NotificationChannel(
             CHANNEL_ID,
@@ -84,18 +97,17 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val notificationManager = context.getSystemService<NotificationManager>()!!
         notificationManager.createNotificationChannel(channel)
-        println("[AlarmReceiver] Notification channel created")
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.alarm_blue)
-                .setContentTitle(title)
-                .setContentText(timeWithMeridiemAsString(alarmTime))
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setAutoCancel(true)
-                .setFullScreenIntent(alarmPendingIntent, true)
-                .build()
+            .setSmallIcon(R.drawable.alarm_blue)
+            .setContentTitle(title)
+            .setContentText(timeWithMeridiemAsString(alarmTime))
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setAutoCancel(true)
+            .setFullScreenIntent(alarmTriggerPendingIntent, true)
+            .addAction(R.drawable.alarm_blue, context.getString(R.string.turn_off), alarmTurnOffPendingIntent)
+            .build()
         notificationManager.notify(alarmId, notification)
-        println("[AlarmReceiver] Notification shown")
     }
 
     companion object {

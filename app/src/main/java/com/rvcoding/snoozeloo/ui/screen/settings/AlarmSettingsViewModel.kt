@@ -78,7 +78,7 @@ class AlarmSettingsViewModel(
                         }
                         else {
                             alarmRepository.getAlarm(action.alarm.id)?.let {
-                                alarmScheduler.cancel(it)
+                                alarmScheduler.cancel(it.id)
                             }
                             alarmRepository.updateAlarm(it.copy(
                                 enabled = true,
