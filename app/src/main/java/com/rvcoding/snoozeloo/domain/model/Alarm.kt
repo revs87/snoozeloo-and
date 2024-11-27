@@ -10,7 +10,7 @@ import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.showSleep
 import com.rvcoding.snoozeloo.ui.screen.list.model.TimeFormat
 import com.rvcoding.snoozeloo.ui.util.isLessThanAMinute
 import com.rvcoding.snoozeloo.ui.util.meridianAsString
-import com.rvcoding.snoozeloo.ui.util.nextAlarmTime
+import com.rvcoding.snoozeloo.ui.util.futureTime
 import com.rvcoding.snoozeloo.ui.util.nextLocalMidnightInUtc
 import com.rvcoding.snoozeloo.ui.util.timeLeftAsString
 import com.rvcoding.snoozeloo.ui.util.timeWithMeridiemAsString
@@ -69,6 +69,6 @@ fun Alarm.toAlarmInfo(): AlarmInfo = AlarmInfo(
                 ))
         }
         this.time.utcTime.isLessThanAMinute() -> StringResource(R.string.alarm_time_left_less_than_minute)
-        else -> StringResource(R.string.alarm_time_left, arrayOf(timeLeftAsString(this.time.utcTime.nextAlarmTime())))
+        else -> StringResource(R.string.alarm_time_left, arrayOf(timeLeftAsString(this.time.utcTime.futureTime())))
     }
 )

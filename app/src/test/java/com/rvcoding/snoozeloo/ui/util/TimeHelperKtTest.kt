@@ -167,7 +167,7 @@ class TimeHelperKtTest {
         val alarmTime = 1730718000000    // Nov 04 11:00:00 UTC
         val nowTime = 1730714400000      // Nov 04 10:00:00 UTC
         val expectedTime = 1730718000000 // Nov 04 11:00:00 UTC
-        val localTime = alarmTime.nextAlarmTime(utcNow = nowTime)
+        val localTime = alarmTime.futureTime(utcNow = nowTime)
         assertEquals(expectedTime, localTime)
     }
 
@@ -176,7 +176,7 @@ class TimeHelperKtTest {
         val alarmTime = 1730804400000    // Nov 05 11:00:00 UTC
         val nowTime = 1730714400000      // Nov 04 10:00:00 UTC
         val expectedTime = 1730804400000 // Nov 05 11:00:00 UTC
-        val localTime = alarmTime.nextAlarmTime(utcNow = nowTime)
+        val localTime = alarmTime.futureTime(utcNow = nowTime)
         assertEquals(expectedTime, localTime)
     }
 
@@ -185,7 +185,7 @@ class TimeHelperKtTest {
         val alarmTime = 1730628000000    // Nov 04 10:00:00 UTC
         val nowTime = 1730804400000      // Nov 05 11:00:00 UTC
         val expectedTime = 1730887200000 // Nov 06 10:00:00 UTC
-        val localTime = alarmTime.nextAlarmTime(utcNow = nowTime)
+        val localTime = alarmTime.futureTime(utcNow = nowTime)
         assertEquals(expectedTime, localTime)
     }
 

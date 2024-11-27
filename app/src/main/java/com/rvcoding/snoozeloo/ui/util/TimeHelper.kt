@@ -62,18 +62,22 @@ private fun durationAsStr(duration: Duration): String {
     }
 }
 
-fun Long.nextAlarmTime(utcNow: Long = System.currentTimeMillis()) : Long {
+fun Long.futureTime(utcNow: Long = System.currentTimeMillis()) : Long {
     val alarm = Calendar.getInstance()
     alarm.timeInMillis = this
 
     val today = Calendar.getInstance()
     today.timeInMillis = if (this > utcNow) this else utcNow
+    today.set(Calendar.SECOND, 0)
+    today.set(Calendar.MILLISECOND, 0)
 
     alarm.set(Calendar.YEAR, today.get(Calendar.YEAR))
     alarm.set(Calendar.MONTH, today.get(Calendar.MONTH))
     alarm.set(Calendar.DAY_OF_MONTH, today.get(Calendar.DAY_OF_MONTH))
+    alarm.set(Calendar.SECOND, 0)
+    alarm.set(Calendar.MILLISECOND, 0)
 
-    if (alarm.timeInMillis < utcNow) {
+    if (alarm.timeInMillis < today.timeInMillis) {
         alarm.add(Calendar.DAY_OF_MONTH, 1)
         return alarm.timeInMillis
     }

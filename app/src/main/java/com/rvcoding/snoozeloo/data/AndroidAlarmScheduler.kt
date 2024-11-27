@@ -13,6 +13,7 @@ import com.rvcoding.snoozeloo.common.DispatchersProvider
 import com.rvcoding.snoozeloo.domain.AlarmScheduler
 import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.ALARM_ID_EXTRA_KEY
 import com.rvcoding.snoozeloo.domain.model.Alarm
+import com.rvcoding.snoozeloo.ui.util.futureTime
 import com.rvcoding.snoozeloo.ui.util.truncateToMinute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -36,7 +37,7 @@ class AndroidAlarmScheduler(
 
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            alarm.time.utcTime.truncateToMinute(),
+            alarm.time.utcTime.futureTime(),
             PendingIntent.getBroadcast(
                 context,
                 alarm.id,
