@@ -1,9 +1,7 @@
 package com.rvcoding.snoozeloo
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.view.View
-import android.view.animation.OvershootInterpolator
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -16,7 +14,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
-import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.rvcoding.snoozeloo.ui.navigation.NavigationRoot
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurface
@@ -30,39 +27,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setScreenAsAlarm(true)
+
         installSplashScreen().apply {
             setKeepOnScreenCondition {
                 !vm.isReady.value
             }
-//            setOnExitAnimationListener { screen ->
-//                enableEdgeToEdge(
-//                    statusBarStyle = SystemBarStyle.auto(
-//                        lightScrim = BackgroundSurface.toArgb(),
-//                        darkScrim = BackgroundSurfaceDark.toArgb()
-//                    )
-//                )
-//                val zoomX = ObjectAnimator.ofFloat(
-//                    screen.iconView,
-//                    View.SCALE_X,
-//                    0.5f,
-//                    0.0f
-//                )
-//                val zoomY = ObjectAnimator.ofFloat(
-//                    screen.iconView,
-//                    View.SCALE_Y,
-//                    0.5f,
-//                    0.0f
-//                )
-//                zoomX.interpolator = OvershootInterpolator()
-//                zoomX.duration = 500L
-//                zoomX.doOnEnd { screen.remove() }
-//                zoomY.interpolator = OvershootInterpolator()
-//                zoomY.duration = 500L
-//                zoomY.doOnEnd { screen.remove() }
-//
-//                zoomX.start()
-//                zoomY.start()
-//            }
         }
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(
@@ -86,5 +57,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    fun setScreenAsAlarm(isAlarm: Boolean = false) {
+        if (isAlarm) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        setShowWhenLocked(isAlarm)
+        setTurnScreenOn(isAlarm)
     }
 }

@@ -7,7 +7,9 @@ import android.app.TaskStackBuilder
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
 import com.rvcoding.snoozeloo.DEEP_LINK_DOMAIN
@@ -30,24 +32,25 @@ class AlarmReceiver : BroadcastReceiver() {
         if (alarmId == -1) return
 
         coScope.launch {
-            println("[AlarmReceiver] Alarm triggered id=$alarmId contextNull?=${context == null}")
             alarmRepository.updateAlarmEnabled(alarmId, false)
             alarmRepository.getAlarm(alarmId)?.let { alarm ->
                 println("[AlarmReceiver] Alarm: $alarm")
                 context?.let {
                     val alarmActivityIntent = Intent(context, MainActivity::class.java).apply {
                         data = android.net.Uri.parse("https://$DEEP_LINK_DOMAIN/$alarmId")
-                        flags = FLAG_ACTIVITY_NEW_TASK
+                        flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TOP
                     }
 
-                    showNotification(
-                        context,
-                        alarmId = alarmId,
-                        alarmTime = alarm.time.utcTime,
-                        alarmActivityIntent = alarmActivityIntent
-                    )
-
-                    //context.startActivity(alarmActivityIntent)
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+                        context.startActivity(alarmActivityIntent)
+                    } else {
+                        showNotification(
+                            context,
+                            alarmId = alarmId,
+                            alarmTime = alarm.time.utcTime,
+                            alarmActivityIntent = alarmActivityIntent
+                        )
+                    }
                 }
             }
         }
@@ -62,30 +65,39 @@ class AlarmReceiver : BroadcastReceiver() {
     ) {
         val alarmPendingIntent = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(alarmActivityIntent)
-            getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
+            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
+
+        context.startActivity(alarmActivityIntent)
+
         val channel = NotificationChannel(
-            "channel_id",
-            "channel_name",
+            CHANNEL_ID,
+            CHANNEL_NAME,
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
             setBypassDnd(true)
+            enableVibration(true)
         }
 
         val notificationManager = context.getSystemService<NotificationManager>()!!
         notificationManager.createNotificationChannel(channel)
         println("[AlarmReceiver] Notification channel created")
 
-        val notification = NotificationCompat.Builder(context, "channel_id")
-            .setSmallIcon(R.drawable.alarm_blue)
-            .setContentTitle(title)
-            .setContentText(timeAsString(alarmTime))
-            .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setAutoCancel(true)
-            .setContentIntent(alarmPendingIntent)
-            .build()
-
+        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.alarm_blue)
+                .setContentTitle(title)
+                .setContentText(timeAsString(alarmTime))
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setAutoCancel(true)
+                .setFullScreenIntent(alarmPendingIntent, true)
+                .build()
         notificationManager.notify(alarmId, notification)
         println("[AlarmReceiver] Notification shown")
+    }
+
+    companion object {
+        const val CHANNEL_ID = "alarm_channel"
+        const val CHANNEL_NAME = "Alarms"
+
     }
 }
