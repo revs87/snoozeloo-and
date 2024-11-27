@@ -13,6 +13,7 @@ interface AlarmScheduler {
         }
     )
     fun cancel(alarm: Alarm)
+    fun removeNotification(alarmId: Int)
 
     companion object {
         const val ALARM_ID_EXTRA_KEY = "ALARM_ID"

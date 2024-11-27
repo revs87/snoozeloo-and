@@ -2,9 +2,11 @@ package com.rvcoding.snoozeloo.data
 
 import android.annotation.SuppressLint
 import android.app.AlarmManager
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import androidx.core.content.getSystemService
 import com.rvcoding.snoozeloo.common.DispatchersProvider
 import com.rvcoding.snoozeloo.domain.AlarmScheduler
 import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.ALARM_ID_EXTRA_KEY
@@ -55,5 +57,10 @@ class AndroidAlarmScheduler(
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
         )
+    }
+
+    override fun removeNotification(alarmId: Int) {
+        val notificationManager = context.getSystemService<NotificationManager>()!!
+        notificationManager.cancel(alarmId)
     }
 }

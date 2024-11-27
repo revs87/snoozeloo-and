@@ -3,6 +3,7 @@ package com.rvcoding.snoozeloo.ui.screen.trigger
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rvcoding.snoozeloo.domain.AlarmScheduler
 import com.rvcoding.snoozeloo.domain.navigation.Actions
 import com.rvcoding.snoozeloo.domain.navigation.Destination
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 
 class AlarmTriggerViewModel(
     private val alarmRepository: AlarmRepository,
+    private val alarmScheduler: AlarmScheduler,
     private val navigator: Navigator
 ) : ViewModel() {
 
@@ -40,6 +42,7 @@ class AlarmTriggerViewModel(
             }
             is Actions.AlarmTrigger.TurnOff -> {
                 viewModelScope.launch {
+                    alarmScheduler.removeNotification(action.alarmId)
                     navigator.navigate(
                         destination = Destination.YourAlarms,
                         navOptions = {
