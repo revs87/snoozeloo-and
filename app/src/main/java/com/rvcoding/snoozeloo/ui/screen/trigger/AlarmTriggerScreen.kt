@@ -1,5 +1,12 @@
 package com.rvcoding.snoozeloo.ui.screen.trigger
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +29,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -83,12 +91,7 @@ fun AlarmTriggerScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(
-            modifier = Modifier.size(60.dp),
-            imageVector = ImageVector.vectorResource(id = R.drawable.alarm_blue),
-            contentDescription = null,
-            tint = Primary
-        )
+        RingingAlarmIconAnimation()
         Spacer(modifier = Modifier.padding(16.dp))
         Row(
             Modifier.fillMaxWidth(),
@@ -168,6 +171,40 @@ fun AlarmTriggerScreen(
             )
         }
     }
+}
+
+@Composable
+fun RingingAlarmIconAnimation() {
+    val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
+
+    val angle by infiniteTransition.animateFloat(
+        initialValue = -10f,
+        targetValue = 10f,
+        animationSpec = infiniteRepeatable(
+            repeatMode = RepeatMode.Reverse,
+            animation = keyframes {
+                durationMillis = 1700 // 6*200ms + 500ms
+                -10f at 0 using LinearEasing // Start position
+                10f at 200 using FastOutSlowInEasing // 1st wobble
+                -10f at 400 using FastOutSlowInEasing // 2nd wobble
+                10f at 600 using FastOutSlowInEasing // 3rd wobble
+                -10f at 800 using FastOutSlowInEasing // 4th wobble
+                10f at 1000 using FastOutSlowInEasing // 5th wobble
+                10f at 1200 using LinearEasing // Hold for 1 second
+            }
+        ), label = "angle"
+    )
+
+    Icon(
+        imageVector = ImageVector.vectorResource(id = R.drawable.alarm_blue),
+        tint = Primary,
+        contentDescription = "Ringing Bell",
+        modifier = Modifier
+            .size(60.dp)
+            .graphicsLayer {
+                rotationZ = angle
+            }
+    )
 }
 
 @Preview(showBackground = true)
