@@ -26,7 +26,7 @@ class YourAlarmsViewModel(
 
     val alarms: StateFlow<YourAlarmsState> = alarmRepository
         .getAlarms()
-        .map { YourAlarmsState(it.map { alarm -> alarm.toAlarmInfo().also { println("Alarm: $it") } }) }
+        .map { YourAlarmsState(it.map { alarm -> alarm.toAlarmInfo() }) }
         .onEach { println("Alarms: $it") }
         .stateIn(
             scope = viewModelScope + dispatchersProvider.io,

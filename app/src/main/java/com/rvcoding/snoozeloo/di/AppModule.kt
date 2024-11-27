@@ -58,5 +58,5 @@ val appModule = module {
      * */
     viewModel { YourAlarmsViewModel(get(), get(), get(), get()) }
     viewModel { AlarmSettingsViewModel(get(), get(), get(), get(), SavedStateHandle()) }
-    viewModel { AlarmTriggerViewModel(get(), get(), get()) }
+    viewModel { AlarmTriggerViewModel(get(), get(), get(), get()) }
 }

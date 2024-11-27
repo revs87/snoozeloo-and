@@ -14,6 +14,8 @@ interface AlarmScheduler {
     )
     fun cancel(alarmId: Int)
     fun removeNotification(alarmId: Int)
+    fun playRingtone()
+    fun stopRingtone()
 
     companion object {
         const val ALARM_ID_EXTRA_KEY = "ALARM_ID"

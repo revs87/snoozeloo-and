@@ -6,6 +6,8 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.media.Ringtone
+import android.media.RingtoneManager
 import androidx.core.content.getSystemService
 import com.rvcoding.snoozeloo.common.DispatchersProvider
 import com.rvcoding.snoozeloo.domain.AlarmScheduler
@@ -63,4 +65,9 @@ class AndroidAlarmScheduler(
         val notificationManager = context.getSystemService<NotificationManager>()!!
         notificationManager.cancel(alarmId)
     }
+
+    private val ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+    private var ringtone: Ringtone = RingtoneManager.getRingtone(context, ringtoneUri)
+    override fun playRingtone() = ringtone.play()
+    override fun stopRingtone() = ringtone.stop()
 }
