@@ -47,8 +47,8 @@ import com.rvcoding.snoozeloo.R
 import com.rvcoding.snoozeloo.domain.model.Alarm
 import com.rvcoding.snoozeloo.domain.model.TimeFormatPreference
 import com.rvcoding.snoozeloo.domain.navigation.Actions
-import com.rvcoding.snoozeloo.ui.theme.BackgroundSurface
-import com.rvcoding.snoozeloo.ui.theme.BackgroundSurfaceDark
+import com.rvcoding.snoozeloo.ui.theme.Background
+import com.rvcoding.snoozeloo.ui.theme.BackgroundDark
 import com.rvcoding.snoozeloo.ui.theme.GreyDisabled
 import com.rvcoding.snoozeloo.ui.theme.GreyDisabledDark
 import com.rvcoding.snoozeloo.ui.theme.Primary
@@ -153,7 +153,7 @@ fun AlarmTriggerScreen(
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 text = stringResource(R.string.turn_off),
-                color = if (isDarkTheme()) BackgroundSurfaceDark else BackgroundSurface,
+                color = if (isDarkTheme()) BackgroundDark else Background,
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.SemiBold,

@@ -36,8 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rvcoding.snoozeloo.R
-import com.rvcoding.snoozeloo.ui.theme.BackgroundSurface
-import com.rvcoding.snoozeloo.ui.theme.BackgroundSurfaceDark
+import com.rvcoding.snoozeloo.ui.theme.Background
+import com.rvcoding.snoozeloo.ui.theme.BackgroundDark
 import com.rvcoding.snoozeloo.ui.theme.GreyDisabled
 import com.rvcoding.snoozeloo.ui.theme.GreyDisabledDark
 import com.rvcoding.snoozeloo.ui.theme.Primary
@@ -195,7 +195,7 @@ sealed interface TopBar {
         val isDarkTheme: Boolean,
         val onLeftButtonClicked: () -> Unit,
         val leftButtonIconRes: ImageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-        val leftButtonIconTint: Color = if (isDarkTheme) BackgroundSurfaceDark else BackgroundSurface,
+        val leftButtonIconTint: Color = if (isDarkTheme) BackgroundDark else Background,
         val leftButtonColor: Color = if (isDarkTheme) PrimaryDark else Primary,
     ) : TopBar
 
@@ -206,9 +206,9 @@ sealed interface TopBar {
         val onLeftButtonClicked: () -> Unit,
         val rightButtonTextRes: Int = R.string.save,
         val leftButtonIconRes: ImageVector = Icons.Rounded.Close,
-        val leftButtonIconTint: Color = if (isDarkTheme) BackgroundSurfaceDark else BackgroundSurface,
+        val leftButtonIconTint: Color = if (isDarkTheme) BackgroundDark else Background,
         val leftButtonColor: Color = if (isDarkTheme) PrimaryDark else Primary,
-        val rightButtonTextTint: Color = if (isDarkTheme) BackgroundSurfaceDark else BackgroundSurface,
+        val rightButtonTextTint: Color = if (isDarkTheme) BackgroundDark else Background,
         val rightButtonColor: Color = if (isDarkTheme) PrimaryDark else Primary,
     ) : TopBar
 }

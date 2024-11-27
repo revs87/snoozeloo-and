@@ -20,8 +20,8 @@ import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.ALARM_ID_EXTRA_KEY
 import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.IS_ALARM_TRIGGERED_EXTRA_KEY
 import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.IS_ALARM_TURN_OFF_EXTRA_KEY
 import com.rvcoding.snoozeloo.ui.navigation.NavigationRoot
-import com.rvcoding.snoozeloo.ui.theme.BackgroundSurface
-import com.rvcoding.snoozeloo.ui.theme.BackgroundSurfaceDark
+import com.rvcoding.snoozeloo.ui.theme.Background
+import com.rvcoding.snoozeloo.ui.theme.BackgroundDark
 import com.rvcoding.snoozeloo.ui.theme.SnoozelooTheme
 import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 import org.koin.java.KoinJavaComponent.inject
@@ -48,8 +48,8 @@ class MainActivity : ComponentActivity() {
         }
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(
-                lightScrim = BackgroundSurface.toArgb(),
-                darkScrim = BackgroundSurfaceDark.toArgb()
+                lightScrim = Background.toArgb(),
+                darkScrim = BackgroundDark.toArgb()
             )
         )
         setContent {
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPadding),
-                        color = if (isDarkTheme()) BackgroundSurfaceDark else BackgroundSurface
+                        color = if (isDarkTheme()) BackgroundDark else Background
                     ) {
                         Box(modifier = Modifier.fillMaxSize()) {
                             NavigationRoot()

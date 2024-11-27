@@ -39,9 +39,16 @@ import com.rvcoding.snoozeloo.domain.navigation.Actions
 import com.rvcoding.snoozeloo.ui.component.TimeDisplay
 import com.rvcoding.snoozeloo.ui.component.TimePickerDialog
 import com.rvcoding.snoozeloo.ui.component.TopBar
+import com.rvcoding.snoozeloo.ui.theme.Background
+import com.rvcoding.snoozeloo.ui.theme.BackgroundCard
+import com.rvcoding.snoozeloo.ui.theme.BackgroundCardDark
+import com.rvcoding.snoozeloo.ui.theme.BackgroundDark
 import com.rvcoding.snoozeloo.ui.theme.Primary
+import com.rvcoding.snoozeloo.ui.theme.PrimaryDark
 import com.rvcoding.snoozeloo.ui.theme.TextDisabled
+import com.rvcoding.snoozeloo.ui.theme.TextDisabledDark
 import com.rvcoding.snoozeloo.ui.theme.TextSecondary
+import com.rvcoding.snoozeloo.ui.theme.TextSecondaryDark
 import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 import org.koin.androidx.compose.koinViewModel
 import java.util.Calendar
@@ -170,20 +177,20 @@ private fun TimeContent(
         TimeDisplay(
             state = timePickerState,
             colors = TimePickerDefaults.colors().copy(
-                clockDialColor = MaterialTheme.colorScheme.background,
-                selectorColor = Primary,
-                containerColor = MaterialTheme.colorScheme.background,
-                clockDialSelectedContentColor = MaterialTheme.colorScheme.surface,
-                clockDialUnselectedContentColor = TextSecondary,
-                periodSelectorBorderColor = MaterialTheme.colorScheme.background,
-                periodSelectorSelectedContainerColor = Primary,
-                periodSelectorSelectedContentColor = TextDisabled,
+                clockDialColor = if (isDarkTheme()) BackgroundDark else Background,
+                selectorColor = if (isDarkTheme()) PrimaryDark else Primary,
+                containerColor = if (isDarkTheme()) BackgroundDark else Background,
+                clockDialSelectedContentColor = if (isDarkTheme()) BackgroundCardDark else BackgroundCard,
+                clockDialUnselectedContentColor = if (isDarkTheme()) TextSecondaryDark else TextSecondary,
+                periodSelectorBorderColor = if (isDarkTheme()) BackgroundDark else Background,
+                periodSelectorSelectedContainerColor = if (isDarkTheme()) PrimaryDark else Primary,
+                periodSelectorSelectedContentColor = if (isDarkTheme()) TextDisabledDark else TextDisabled,
                 periodSelectorUnselectedContainerColor = Color.Transparent,
-                periodSelectorUnselectedContentColor = TextSecondary,
-                timeSelectorSelectedContainerColor = MaterialTheme.colorScheme.background,
-                timeSelectorSelectedContentColor = if (state.alarm.time.isInitial) TextSecondary else Primary,
-                timeSelectorUnselectedContainerColor = MaterialTheme.colorScheme.background,
-                timeSelectorUnselectedContentColor = if (state.alarm.time.isInitial) TextSecondary else Primary
+                periodSelectorUnselectedContentColor = if (isDarkTheme()) TextSecondaryDark else TextSecondary,
+                timeSelectorSelectedContainerColor = if (isDarkTheme()) BackgroundDark else Background,
+                timeSelectorSelectedContentColor = if (state.alarm.time.isInitial) if (isDarkTheme()) TextSecondaryDark else TextSecondary else if (isDarkTheme()) PrimaryDark else Primary,
+                timeSelectorUnselectedContainerColor = if (isDarkTheme()) BackgroundDark else Background,
+                timeSelectorUnselectedContentColor = if (state.alarm.time.isInitial) if (isDarkTheme()) TextSecondaryDark else TextSecondary else if (isDarkTheme()) PrimaryDark else Primary
             ),
             onClick = { dialogVisible = true }
         )
