@@ -16,6 +16,7 @@ import com.rvcoding.snoozeloo.DEEP_LINK_DOMAIN
 import com.rvcoding.snoozeloo.MainActivity
 import com.rvcoding.snoozeloo.R
 import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.ALARM_ID_EXTRA_KEY
+import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.IS_ALARM_TRIGGERED_EXTRA_KEY
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
 import com.rvcoding.snoozeloo.ui.util.timeWithMeridiemAsString
 import kotlinx.coroutines.CoroutineScope
@@ -39,6 +40,7 @@ class AlarmReceiver : BroadcastReceiver() {
                     val alarmActivityIntent = Intent(context, MainActivity::class.java).apply {
                         data = android.net.Uri.parse("https://$DEEP_LINK_DOMAIN/$alarmId")
                         flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TOP
+                        putExtra(IS_ALARM_TRIGGERED_EXTRA_KEY, true)
                     }
 
                     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
@@ -99,6 +101,5 @@ class AlarmReceiver : BroadcastReceiver() {
     companion object {
         const val CHANNEL_ID = "alarm_channel"
         const val CHANNEL_NAME = "Alarms"
-
     }
 }

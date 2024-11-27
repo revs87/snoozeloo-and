@@ -15,6 +15,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.IS_ALARM_TRIGGERED_EXTRA_KEY
 import com.rvcoding.snoozeloo.ui.navigation.NavigationRoot
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurface
 import com.rvcoding.snoozeloo.ui.theme.BackgroundSurfaceDark
@@ -28,7 +29,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setScreenAsAlarm(true)
+        val isTriggered = intent?.getBooleanExtra(IS_ALARM_TRIGGERED_EXTRA_KEY, false) == true
+        setScreenAsAlarm(isTriggered)
 
         installSplashScreen().apply {
             setKeepOnScreenCondition {
@@ -59,9 +61,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    fun setScreenAsAlarm(isAlarm: Boolean = false) {
-        if (isAlarm) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        setShowWhenLocked(isAlarm)
-        setTurnScreenOn(isAlarm)
+    fun setScreenAsAlarm(isTriggered: Boolean = false) {
+        if (isTriggered) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        setShowWhenLocked(isTriggered)
+        setTurnScreenOn(isTriggered)
     }
 }
