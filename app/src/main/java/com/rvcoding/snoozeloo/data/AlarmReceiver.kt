@@ -76,6 +76,7 @@ class AlarmReceiver : BroadcastReceiver() {
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
             setBypassDnd(true)
+            enableLights(true)
             enableVibration(true)
         }
 
