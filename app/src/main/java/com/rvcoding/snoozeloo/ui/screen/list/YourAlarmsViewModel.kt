@@ -44,7 +44,7 @@ class YourAlarmsViewModel(
                         if (alarm.enabled) {
                             alarmScheduler.schedule(alarm)
                         } else {
-                            alarmScheduler.cancel(alarm)
+                            alarmScheduler.cancel(alarm.id)
                         }
                     }
                 }
