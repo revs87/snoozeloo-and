@@ -13,7 +13,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -31,7 +30,7 @@ class YourAlarmsViewModel(
     private fun ticker() = flow<Long> {
         while (true) {
             emit(System.currentTimeMillis())
-            delay(5_000L)
+            delay(10_000L)
         }
     }
 
