@@ -97,6 +97,8 @@ class AlarmReceiver : BroadcastReceiver() {
             setBypassDnd(true)
             enableLights(true)
             enableVibration(true)
+            setShowBadge(true)
+            lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
         }
 
         val notificationManager = context.getSystemService<NotificationManager>()!!
