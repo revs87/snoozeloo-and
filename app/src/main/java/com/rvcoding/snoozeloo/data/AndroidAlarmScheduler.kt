@@ -36,19 +36,9 @@ class AndroidAlarmScheduler(
             putExtra(ALARM_ID_EXTRA_KEY, alarm.id)
         }
 
-        val mostRecentAlarmTime = alarm.time.utcTime.futureTime()
-        coScope.launch {
-            alarmRepository.updateAlarm(
-                alarm.copy(
-                    enabled = true,
-                    time = alarm.time.copy(utcTime = mostRecentAlarmTime)
-                )
-            )
-        }
-
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            mostRecentAlarmTime,
+            alarm.time.utcTime.futureTime(),
             PendingIntent.getBroadcast(
                 context,
                 alarm.id,

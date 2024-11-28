@@ -82,6 +82,7 @@ class AlarmSettingsViewModel(
                             }
                             alarmRepository.updateAlarm(it.copy(
                                 enabled = true,
+                                name = action.alarm.name,
                                 time = it.time.copy(utcTime = it.time.utcTime.truncateToMinute())
                             ))
                         }
