@@ -8,4 +8,5 @@
     <string name="save">Save</string>
     <string name="turn_off">Turn off</string>
     <string name="request_permission">Request permission</string>
+    <string name="alarm_name">Alarm name:</string>
 </resources>

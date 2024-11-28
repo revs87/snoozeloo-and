@@ -158,13 +158,6 @@ fun TopBar(item: TopBar) {
 @Preview(showBackground = true)
 @Composable
 fun TopBarPreview() {
-//    TopBar(item = TopBar.Title.Default())
-//    TopBar(
-//        item = TopBar.BackNavigator(
-//            isDarkTheme = isDarkTheme(),
-//            onLeftButtonClicked = {}
-//        )
-//    )
     TopBar(
         item = TopBar.Savable(
             isDarkTheme = isDarkTheme(),

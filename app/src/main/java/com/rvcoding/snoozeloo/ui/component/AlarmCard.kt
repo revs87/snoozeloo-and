@@ -35,10 +35,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo
 import com.rvcoding.snoozeloo.ui.screen.list.model.TimeFormat
+import com.rvcoding.snoozeloo.ui.theme.BackgroundCard
+import com.rvcoding.snoozeloo.ui.theme.BackgroundCardDark
 import com.rvcoding.snoozeloo.ui.theme.Primary
 import com.rvcoding.snoozeloo.ui.theme.PrimaryDark
 import com.rvcoding.snoozeloo.ui.theme.PrimaryDisabled
 import com.rvcoding.snoozeloo.ui.theme.PrimaryDisabledDark
+import com.rvcoding.snoozeloo.ui.theme.TextSecondary
 import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 
 @Composable
@@ -55,7 +58,7 @@ fun AlarmCard(
             defaultElevation = 0.dp
         ),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = if (isDarkTheme()) BackgroundCardDark else BackgroundCard
         )
     ) {
         Box(
@@ -110,7 +113,8 @@ fun AlarmCard(
                     text = alarmInfo.timeLeft.asString(),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    color = TextSecondary
                 )
             }
             CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
@@ -122,10 +126,10 @@ fun AlarmCard(
                     checked = checked,
                     colors = SwitchDefaults.colors(
                         checkedBorderColor = if (isDarkTheme()) PrimaryDark else Primary,
-                        checkedThumbColor = MaterialTheme.colorScheme.surface,
+                        checkedThumbColor = if (isDarkTheme()) BackgroundCardDark else BackgroundCard,
                         checkedTrackColor = if (isDarkTheme()) PrimaryDark else Primary,
                         uncheckedBorderColor = if (isDarkTheme()) PrimaryDisabledDark else PrimaryDisabled,
-                        uncheckedThumbColor = MaterialTheme.colorScheme.surface,
+                        uncheckedThumbColor = if (isDarkTheme()) BackgroundCardDark else BackgroundCard,
                         uncheckedTrackColor = if (isDarkTheme()) PrimaryDisabledDark else PrimaryDisabled
                     ),
                     onCheckedChange = { checked = it; onCheckedChange.invoke(it) },
