@@ -62,6 +62,7 @@ fun NameCard(
                 fontSize = 16.sp
             )
             TextField(
+                modifier = Modifier.fillMaxWidth(),
                 value = alarmName,
                 onValueChange = {
                     val newName = it.take(30)
