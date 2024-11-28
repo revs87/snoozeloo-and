@@ -51,6 +51,10 @@ class MainActivity : ComponentActivity() {
             statusBarStyle = SystemBarStyle.auto(
                 lightScrim = Background.toArgb(),
                 darkScrim = BackgroundDark.toArgb()
+            ),
+            navigationBarStyle = SystemBarStyle.auto(
+                lightScrim = Background.toArgb(),
+                darkScrim = BackgroundDark.toArgb()
             )
         )
         setContent {

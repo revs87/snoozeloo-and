@@ -44,9 +44,14 @@ fun SnoozelooTheme(
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (darkTheme) dynamicDarkColorScheme(context).copy(
+                background = BackgroundDark,
+                surface = BackgroundCardDark
+            ) else dynamicLightColorScheme(context).copy(
+                background = Background,
+                surface = BackgroundCard
+            )
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
