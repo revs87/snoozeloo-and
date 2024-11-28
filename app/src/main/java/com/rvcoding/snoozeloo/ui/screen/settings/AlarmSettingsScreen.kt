@@ -34,6 +34,8 @@ fun AlarmSettingsScreenRoot(
 
     AlarmSettingsScreen(
         state = state,
+        alarmName = vm.alarmName,
+        alarmNameIsValid = vm.alarmNameIsValid,
         onAction = vm::onAction,
     )
 }
@@ -42,6 +44,8 @@ fun AlarmSettingsScreenRoot(
 @Composable
 fun AlarmSettingsScreen(
     state: AlarmSettingsState,
+    alarmName: String,
+    alarmNameIsValid: Boolean,
     onAction: (Actions.AlarmSettings) -> Unit,
 ) {
     Box(
@@ -53,13 +57,13 @@ fun AlarmSettingsScreen(
             TopBar(
                 item = TopBar.Savable(
                     isDarkTheme = isDarkTheme(),
-                    rightButtonEnabled = true,
+                    rightButtonEnabled = alarmNameIsValid,
                     onRightButtonClicked = { onAction.invoke(Actions.AlarmSettings.Save(state.alarm)) },
                     onLeftButtonClicked = { onAction.invoke(Actions.AlarmSettings.Close) }
                 )
             )
             TimeCard(state, onAction)
-            NameCard(state, onAction)
+            NameCard(alarmName, onAction)
         }
     }
 }
@@ -68,5 +72,5 @@ fun AlarmSettingsScreen(
 @Preview(showBackground = true)
 @Composable
 fun AlarmDetailsScreenNonEmptyPreview() {
-    AlarmSettingsScreen(state = AlarmSettingsState.Initial, onAction = {})
+    AlarmSettingsScreen(state = AlarmSettingsState.Initial, "Work", true, onAction = {})
 }

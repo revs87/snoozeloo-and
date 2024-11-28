@@ -8,9 +8,9 @@ import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.HOURS
 import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.HOURS_DURATION
 import com.rvcoding.snoozeloo.ui.screen.list.model.AlarmInfo.Companion.showSleepRecommendation
 import com.rvcoding.snoozeloo.ui.screen.list.model.TimeFormat
+import com.rvcoding.snoozeloo.ui.util.futureTime
 import com.rvcoding.snoozeloo.ui.util.isLessThanAMinute
 import com.rvcoding.snoozeloo.ui.util.meridianAsString
-import com.rvcoding.snoozeloo.ui.util.futureTime
 import com.rvcoding.snoozeloo.ui.util.nextLocalMidnightInUtc
 import com.rvcoding.snoozeloo.ui.util.timeLeftAsString
 import com.rvcoding.snoozeloo.ui.util.timeWithMeridiemAsString
@@ -29,7 +29,7 @@ data class Alarm(
     companion object {
         val NewAlarm = Alarm(
             enabled = false,
-            name = "Work",
+            name = "",
             time = Time.base()
         )
     }

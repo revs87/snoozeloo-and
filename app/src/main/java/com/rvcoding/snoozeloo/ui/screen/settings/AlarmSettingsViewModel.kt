@@ -1,5 +1,9 @@
 package com.rvcoding.snoozeloo.ui.screen.settings
 
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +18,7 @@ import com.rvcoding.snoozeloo.ui.util.fromLocalHoursAndMinutes24Format
 import com.rvcoding.snoozeloo.ui.util.truncateToMinute
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
@@ -24,6 +29,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
@@ -46,6 +52,8 @@ class AlarmSettingsViewModel(
         .flowOn(dispatchersProvider.io)
         .launchIn(viewModelScope)
 
+    private val lastAlarmId = MutableStateFlow(-1)
+
     private fun saveData(value: AlarmSettingsState) { savedStateHandle[SAVE_STATE_KEY] = Json.encodeToString(AlarmSettingsState.serializer(), value) }
     @OptIn(FlowPreview::class)
     val state: StateFlow<AlarmSettingsState> = savedStateHandle.getStateFlow(
@@ -54,14 +62,26 @@ class AlarmSettingsViewModel(
     )
         .map { Json.decodeFromString(AlarmSettingsState.serializer(), it) }
         .debounce(500L)
-        .onEach {
-            println("STATE: $it")
+        .onEach { state ->
+            if (lastAlarmId.value != state.alarm.id) {
+                lastAlarmId.update { state.alarm.id }
+                alarmName = state.alarm.name
+            }
+            println("STATE: $state")
         }
+        .flowOn(dispatchersProvider.io)
         .stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(5_000L),
             initialValue = AlarmSettingsState.Initial
         )
+
+    var alarmName by mutableStateOf("")
+        private set
+
+    val alarmNameIsValid by derivedStateOf {
+        alarmName.isValid()
+    }
 
     fun onAction(action: Actions.AlarmSettings) {
         viewModelScope.launch(dispatchersProvider.io) {
@@ -106,6 +126,7 @@ class AlarmSettingsViewModel(
                     saveData(AlarmSettingsState(alarm))
                 }
                 is Actions.AlarmSettings.OnNameChange -> {
+                    alarmName = action.name
                     val alarm = state.value.alarm.copy(name = action.name)
                     saveData(AlarmSettingsState(alarm))
                 }
@@ -117,3 +138,5 @@ class AlarmSettingsViewModel(
         const val SAVE_STATE_KEY = "alarmSettings"
     }
 }
+
+private fun String.isValid() = this.isNotEmpty()

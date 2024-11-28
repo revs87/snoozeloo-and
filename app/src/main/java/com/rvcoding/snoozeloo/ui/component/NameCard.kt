@@ -13,9 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -27,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rvcoding.snoozeloo.R
 import com.rvcoding.snoozeloo.domain.navigation.Actions
-import com.rvcoding.snoozeloo.ui.screen.settings.AlarmSettingsState
 import com.rvcoding.snoozeloo.ui.theme.BackgroundCard
 import com.rvcoding.snoozeloo.ui.theme.BackgroundCardDark
 import com.rvcoding.snoozeloo.ui.theme.Primary
@@ -38,10 +35,9 @@ import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 
 @Composable
 fun NameCard(
-    state: AlarmSettingsState,
+    alarmName: String,
     onAction: (Actions.AlarmSettings) -> Unit
 ) {
-    var name by remember { mutableStateOf(state.alarm.name) }
     val focusManager = LocalFocusManager.current
 
     Card(
@@ -66,10 +62,9 @@ fun NameCard(
                 fontSize = 16.sp
             )
             TextField(
-                value = name,
+                value = alarmName,
                 onValueChange = {
                     val newName = it.take(30)
-                    name = newName
                     onAction.invoke(Actions.AlarmSettings.OnNameChange(newName))
                 },
                 maxLines = 1,
