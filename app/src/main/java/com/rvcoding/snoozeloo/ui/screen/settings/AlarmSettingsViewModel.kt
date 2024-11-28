@@ -104,8 +104,6 @@ class AlarmSettingsViewModel(
                     )
                     saveData(AlarmSettingsState(alarm))
                 }
-                Actions.AlarmSettings.CloseNameDialog -> {}
-                Actions.AlarmSettings.OpenNameDialog -> {}
                 is Actions.AlarmSettings.OnNameChange -> {
                     val alarm = state.value.alarm.copy(name = action.name)
                     saveData(AlarmSettingsState(alarm))

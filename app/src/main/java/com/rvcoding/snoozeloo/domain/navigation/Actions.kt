@@ -20,9 +20,7 @@ sealed interface Actions {
             val minute: Int,
             val isAfternoon: Boolean
         ) : AlarmSettings
-        data object OpenNameDialog : AlarmSettings
         data class OnNameChange(val name: String) : AlarmSettings
-        data object CloseNameDialog : AlarmSettings
     }
 
     sealed interface AlarmTrigger : Actions {
