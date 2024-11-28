@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LocalTextStyle
@@ -21,6 +22,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rvcoding.snoozeloo.R
@@ -73,7 +75,8 @@ fun NameCard(
                 maxLines = 1,
                 singleLine = true,
                 textStyle = LocalTextStyle.current.copy(
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.End
                 ),
                 colors = TextFieldDefaults.colors().copy(
                     focusedTextColor = if (isDarkTheme()) PrimaryDark else Primary,
@@ -84,6 +87,11 @@ fun NameCard(
                     unfocusedPlaceholderColor = if (isDarkTheme()) TextSecondaryDark else TextSecondary,
                     focusedIndicatorColor = if (isDarkTheme()) PrimaryDark else Primary,
                     unfocusedIndicatorColor = if (isDarkTheme()) TextSecondaryDark else TextSecondary,
+                    cursorColor = if (isDarkTheme()) PrimaryDark else Primary,
+                    textSelectionColors = TextSelectionColors(
+                        handleColor = if (isDarkTheme()) PrimaryDark else Primary,
+                        backgroundColor = if (isDarkTheme()) PrimaryDark.copy(alpha = 0.4f) else Primary.copy(alpha = 0.4f)
+                    )
                 ),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
