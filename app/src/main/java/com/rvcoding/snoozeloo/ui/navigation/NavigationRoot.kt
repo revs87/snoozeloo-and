@@ -1,7 +1,6 @@
 package com.rvcoding.snoozeloo.ui.navigation
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,7 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -21,6 +19,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.rvcoding.snoozeloo.DEEP_LINK_DOMAIN
+import com.rvcoding.snoozeloo.common.checkPostNotificationsPermission
+import com.rvcoding.snoozeloo.common.checkUseFullScreenPermission
+import com.rvcoding.snoozeloo.common.requestUseFullScreenIntent
 import com.rvcoding.snoozeloo.domain.navigation.Destination
 import com.rvcoding.snoozeloo.ui.screen.list.YourAlarmsScreenRoot
 import com.rvcoding.snoozeloo.ui.screen.settings.AlarmSettingsScreenRoot
@@ -52,35 +53,40 @@ fun NavigationRoot(
     ) {
         composable<Destination.YourAlarms> {
             val context = LocalContext.current
-            var hasPermission by remember {
-                mutableStateOf(
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        ContextCompat.checkSelfPermission(
-                            context,
-                            Manifest.permission.POST_NOTIFICATIONS
-                        ) == PackageManager.PERMISSION_GRANTED
-                    } else {
-                        true
-                    }
-                )
-            }
-            var permissionAnswered by remember { mutableStateOf(false) }
-            val permissionLauncher = rememberLauncherForActivityResult(
+
+            var hasPCPermission by remember { mutableStateOf(context.checkPostNotificationsPermission()) }
+            var permissionPCAnswered by remember { mutableStateOf(false) }
+            val permissionPCLauncher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.RequestPermission(),
             ) { isGranted ->
-                hasPermission = isGranted
-                permissionAnswered = true
+                hasPCPermission = isGranted
+                permissionPCAnswered = true
+            }
+
+            var hasUFSPermission by remember { mutableStateOf(context.checkUseFullScreenPermission()) }
+            var permissionUFSAnswered by remember { mutableStateOf(false) }
+            val permissionUFSLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.StartActivityForResult(),
+            ) { result ->
+                hasUFSPermission = context.checkUseFullScreenPermission()
+                permissionUFSAnswered = true
             }
 
             LaunchedEffect(true) {
-                if (!hasPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                if (!hasPCPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    permissionPCLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 } else {
-                    permissionAnswered = true
+                    permissionPCAnswered = true
+                }
+
+                if (!hasUFSPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    permissionUFSLauncher.launch(context.requestUseFullScreenIntent())
+                } else {
+                    permissionUFSAnswered = true
                 }
             }
 
-            if (permissionAnswered) {
+            if (permissionPCAnswered && permissionUFSAnswered) {
                 YourAlarmsScreenRoot()
             }
         }
