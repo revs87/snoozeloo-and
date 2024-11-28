@@ -24,8 +24,8 @@ import com.rvcoding.snoozeloo.domain.navigation.Actions
 import com.rvcoding.snoozeloo.ui.screen.settings.AlarmSettingsState
 import com.rvcoding.snoozeloo.ui.theme.BackgroundCard
 import com.rvcoding.snoozeloo.ui.theme.BackgroundCardDark
-import com.rvcoding.snoozeloo.ui.theme.TextPrimary
-import com.rvcoding.snoozeloo.ui.theme.TextPrimaryDark
+import com.rvcoding.snoozeloo.ui.theme.Primary
+import com.rvcoding.snoozeloo.ui.theme.PrimaryDark
 import com.rvcoding.snoozeloo.ui.theme.TextSecondary
 import com.rvcoding.snoozeloo.ui.theme.TextSecondaryDark
 import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
@@ -61,19 +61,24 @@ fun NameCard(
             TextField(
                 value = name,
                 onValueChange = {
-                    name = it
-                    onAction.invoke(Actions.AlarmSettings.OnNameChange(it))
+                    val newName = it.take(30)
+                    name = newName
+                    onAction.invoke(Actions.AlarmSettings.OnNameChange(newName))
                 },
                 maxLines = 1,
+                singleLine = true,
                 textStyle = LocalTextStyle.current.copy(
-                    color = if (isDarkTheme()) TextSecondaryDark else TextSecondary,
                     fontSize = 16.sp
                 ),
                 colors = TextFieldDefaults.colors().copy(
-                    focusedTextColor = if (isDarkTheme()) TextPrimaryDark else TextPrimary,
+                    focusedTextColor = if (isDarkTheme()) PrimaryDark else Primary,
                     unfocusedTextColor = if (isDarkTheme()) TextSecondaryDark else TextSecondary,
                     focusedContainerColor = if (isDarkTheme()) BackgroundCardDark else BackgroundCard,
-                    unfocusedContainerColor = if (isDarkTheme()) BackgroundCardDark else BackgroundCard
+                    unfocusedContainerColor = if (isDarkTheme()) BackgroundCardDark else BackgroundCard,
+                    focusedPlaceholderColor = if (isDarkTheme()) PrimaryDark else Primary,
+                    unfocusedPlaceholderColor = if (isDarkTheme()) TextSecondaryDark else TextSecondary,
+                    focusedIndicatorColor = if (isDarkTheme()) PrimaryDark else Primary,
+                    unfocusedIndicatorColor = if (isDarkTheme()) TextSecondaryDark else TextSecondary,
                 )
             )
         }

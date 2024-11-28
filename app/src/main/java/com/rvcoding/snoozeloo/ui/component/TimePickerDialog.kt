@@ -25,9 +25,16 @@ import androidx.compose.ui.unit.sp
 import com.rvcoding.snoozeloo.domain.model.toAlarmInfo
 import com.rvcoding.snoozeloo.domain.navigation.Actions
 import com.rvcoding.snoozeloo.ui.screen.settings.AlarmSettingsState
+import com.rvcoding.snoozeloo.ui.theme.Background
+import com.rvcoding.snoozeloo.ui.theme.BackgroundCard
+import com.rvcoding.snoozeloo.ui.theme.BackgroundCardDark
+import com.rvcoding.snoozeloo.ui.theme.BackgroundDark
 import com.rvcoding.snoozeloo.ui.theme.Primary
+import com.rvcoding.snoozeloo.ui.theme.PrimaryDark
 import com.rvcoding.snoozeloo.ui.theme.TextDisabled
 import com.rvcoding.snoozeloo.ui.theme.TextPrimary
+import com.rvcoding.snoozeloo.ui.theme.TextPrimaryDark
+import com.rvcoding.snoozeloo.ui.theme.isDarkTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,20 +72,20 @@ fun TimePickerDialog(
             TimePicker(
                 state = timePickerState,
                 colors = TimePickerDefaults.colors().copy(
-                    clockDialColor = MaterialTheme.colorScheme.background,
-                    selectorColor = Primary,
-                    containerColor = MaterialTheme.colorScheme.background,
-                    clockDialSelectedContentColor = MaterialTheme.colorScheme.surface,
-                    clockDialUnselectedContentColor = TextPrimary,
-                    periodSelectorBorderColor = MaterialTheme.colorScheme.background,
-                    periodSelectorSelectedContainerColor = Primary,
+                    clockDialColor = if (isDarkTheme()) BackgroundDark else Background,
+                    selectorColor = if (isDarkTheme()) PrimaryDark else Primary,
+                    containerColor = if (isDarkTheme()) BackgroundDark else Background,
+                    clockDialSelectedContentColor = if (isDarkTheme()) BackgroundCardDark else BackgroundCard,
+                    clockDialUnselectedContentColor = if (isDarkTheme()) TextPrimaryDark else TextPrimary,
+                    periodSelectorBorderColor = if (isDarkTheme()) BackgroundDark else Background,
+                    periodSelectorSelectedContainerColor = if (isDarkTheme()) PrimaryDark else Primary,
                     periodSelectorSelectedContentColor = TextDisabled,
                     periodSelectorUnselectedContainerColor = Color.Transparent,
-                    periodSelectorUnselectedContentColor = TextPrimary,
-                    timeSelectorSelectedContainerColor = MaterialTheme.colorScheme.background,
-                    timeSelectorSelectedContentColor = TextPrimary,
-                    timeSelectorUnselectedContainerColor = MaterialTheme.colorScheme.background,
-                    timeSelectorUnselectedContentColor = TextPrimary
+                    periodSelectorUnselectedContentColor = if (isDarkTheme()) TextPrimaryDark else TextPrimary,
+                    timeSelectorSelectedContainerColor = if (isDarkTheme()) BackgroundDark else Background,
+                    timeSelectorSelectedContentColor = if (isDarkTheme()) TextPrimaryDark else TextPrimary,
+                    timeSelectorUnselectedContainerColor = if (isDarkTheme()) BackgroundDark else Background,
+                    timeSelectorUnselectedContentColor = if (isDarkTheme()) TextPrimaryDark else TextPrimary
                 )
             )
             Text(
@@ -98,13 +105,13 @@ private fun TimePickerDialog(
     content: @Composable () -> Unit
 ) {
     AlertDialog(
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = if (isDarkTheme()) BackgroundDark else Background,
         onDismissRequest = onDismiss,
         dismissButton = {
             TextButton(onClick = { onDismiss() }) {
                 Text(
                     text = "Dismiss",
-                    color = Primary,
+                    color = if (isDarkTheme()) PrimaryDark else Primary,
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.SemiBold,
@@ -125,7 +132,7 @@ private fun TimePickerDialog(
             TextButton(onClick = { onConfirm() }) {
                 Text(
                     text = "OK",
-                    color = Primary,
+                    color = if (isDarkTheme()) PrimaryDark else Primary,
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.SemiBold,
