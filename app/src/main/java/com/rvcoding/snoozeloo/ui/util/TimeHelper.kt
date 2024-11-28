@@ -42,13 +42,15 @@ fun timeWithMeridiemAsString(utcTime: Long, is24HourFormat: Boolean = TimeFormat
 fun timeWithMeridiemAndDateAsString(utcTime: Long, is24HourFormat: Boolean = TimeFormatPreference.is24HourFormat()): String = timeAsStringInternal(utcTime, timeFormat(is24HourFormat)) + if (is24HourFormat) "" else " " + meridianAsString(utcTime) + " (${timeAsStringInternal(utcTime, dateFormat())})"
 fun meridianAsString(utcTime: Long): String = timeAsStringInternal(utcTime, meridiemFormat()).uppercase()
 fun timeLeftAsString(utcTime: Long, utcNow: Long = System.currentTimeMillis()): String {
-    val now = Instant.fromEpochMilliseconds(utcNow) // By utcNow means we're in the past of utcTime
-    val instant = Instant.fromEpochMilliseconds(utcTime)
+    val instant = Instant.fromEpochMilliseconds(utcTime.futureTime(utcNow))
+    val now = Instant.fromEpochMilliseconds(utcNow.truncateToMinute()) // By utcNow means we're in the past of utcTime
     return durationAsStr(duration = instant - now)
 }
 private fun durationAsStr(duration: Duration): String {
     return if (duration.isNegative()) {
         "0sec"
+    } else if (duration.inWholeSeconds == 0L) {
+        "1d"
     } else {
         val days = duration.inWholeDays
         val hours = duration.inWholeHours % 24

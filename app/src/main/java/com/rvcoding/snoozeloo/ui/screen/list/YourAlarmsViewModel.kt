@@ -9,8 +9,12 @@ import com.rvcoding.snoozeloo.domain.navigation.Actions
 import com.rvcoding.snoozeloo.domain.navigation.Destination.AlarmSettings
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
 import com.rvcoding.snoozeloo.ui.navigation.Navigator
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -24,8 +28,19 @@ class YourAlarmsViewModel(
     private val navigator: Navigator
 ) : ViewModel() {
 
-    val alarms: StateFlow<YourAlarmsState> = alarmRepository
-        .getAlarms()
+    private fun ticker() = flow<Long> {
+        while (true) {
+            emit(System.currentTimeMillis())
+            delay(5_000L)
+        }
+    }
+
+    val alarms: StateFlow<YourAlarmsState> = combine(
+        ticker(),
+        alarmRepository.getAlarms()
+    ) { time, alarms ->
+        alarms
+    }
         .map { YourAlarmsState(it.map { alarm -> alarm.toAlarmInfo() }) }
         .onEach { println("Alarms: $it") }
         .stateIn(

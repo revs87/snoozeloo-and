@@ -51,7 +51,7 @@ val appModule = module {
     single<AlarmRepository> { AlarmRepositoryImpl(get()) }
     single<BootCompletedReceiver> { BootCompletedReceiver() }
     single<AlarmReceiver> { AlarmReceiver() }
-    single<AlarmScheduler> { AndroidAlarmScheduler(get(), get(), get()) }
+    single<AlarmScheduler> { AndroidAlarmScheduler(get(), get(), get(), get()) }
 
     /**
      * ViewModels

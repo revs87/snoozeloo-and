@@ -13,14 +13,15 @@ import com.rvcoding.snoozeloo.common.DispatchersProvider
 import com.rvcoding.snoozeloo.domain.AlarmScheduler
 import com.rvcoding.snoozeloo.domain.AlarmScheduler.Companion.ALARM_ID_EXTRA_KEY
 import com.rvcoding.snoozeloo.domain.model.Alarm
+import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
 import com.rvcoding.snoozeloo.ui.util.futureTime
-import com.rvcoding.snoozeloo.ui.util.truncateToMinute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class AndroidAlarmScheduler(
     private val context: Context,
     private val coScope: CoroutineScope,
+    private val alarmRepository: AlarmRepository,
     private val dispatchersProvider: DispatchersProvider
 ) : AlarmScheduler {
 
@@ -35,9 +36,19 @@ class AndroidAlarmScheduler(
             putExtra(ALARM_ID_EXTRA_KEY, alarm.id)
         }
 
+        val mostRecentAlarmTime = alarm.time.utcTime.futureTime()
+        coScope.launch {
+            alarmRepository.updateAlarm(
+                alarm.copy(
+                    enabled = true,
+                    time = alarm.time.copy(utcTime = mostRecentAlarmTime)
+                )
+            )
+        }
+
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            alarm.time.utcTime.futureTime(),
+            mostRecentAlarmTime,
             PendingIntent.getBroadcast(
                 context,
                 alarm.id,

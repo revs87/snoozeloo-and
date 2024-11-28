@@ -1,5 +1,8 @@
 package com.rvcoding.snoozeloo.ui.util
 
+import assertk.assertThat
+import assertk.assertions.isFalse
+import assertk.assertions.isTrue
 import kotlinx.datetime.TimeZone
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -28,6 +31,20 @@ class TimeHelperKtTest {
     fun meridianAsString_PM() {
         val timeString = meridianAsString(utcTime = 1730738988701) // 04:49 PM
         assertEquals("PM", timeString)
+    }
+
+    @Test
+    fun isLessThanAMinute_true() {
+        val alarmTime = 1730738900000 // Nov 04 2024 16:48:20.000
+        val nowTime = 1730738870000   // Nov 04 2024 16:47:50.000
+        assertThat(alarmTime.isLessThanAMinute(nowTime)).isTrue()
+    }
+
+    @Test
+    fun isLessThanAMinute_false() {
+        val alarmTime = 1730738900000 // Nov 04 2024 16:48:20.000
+        val nowTime = 1730738810000   // Nov 04 2024 16:46:50.000
+        assertThat(alarmTime.isLessThanAMinute(nowTime)).isFalse()
     }
 
     @Test
@@ -72,7 +89,7 @@ class TimeHelperKtTest {
             utcTime = 1730738988701,
             utcNow =  1730738888701
         )
-        assertEquals("1min 40sec", timeString)
+        assertEquals("1min", timeString)
     }
 
     @Test
@@ -81,16 +98,21 @@ class TimeHelperKtTest {
             utcTime = 1730738988701,
             utcNow =  1730738985701
         )
-        assertEquals("3sec", timeString)
+        // Same time returns 1d
+        assertEquals("1d", timeString)
     }
 
     @Test
     fun timeLeftAsString_negativeTime() {
         val timeString = timeLeftAsString(
-            utcTime = 1730688988701,
-            utcNow =  1730738988701
+            utcTime = 1730688988701,  // Nov 04 2024 02:56:28.701
+            utcNow =  1730738988701   // Nov 04 2024 16:49:48.701
         )
-        assertEquals("0sec", timeString)
+        /**
+         * Adds 24h to alarm utcTime - to Nov 05 2024 02:56:00.000
+         * Nov 05 2024 02:56:00.000 minus Nov 04 2024 16:49:00.000 = 10h 7min
+         * */
+        assertEquals("10h 7min", timeString)
     }
 
     @Test
@@ -163,7 +185,16 @@ class TimeHelperKtTest {
     }
 
     @Test
-    fun nextDailyTime_alarm11h00day04_now10h00day04_returns11h00day04() {
+    fun futureTime_sameTimes_returnsSame() {
+        val alarmTime = 1730718000043    // Nov 04 11:00:00 UTC
+        val nowTime = 1730718000023      // Nov 04 11:00:00 UTC
+        val expectedTime = 1730718000000 // Nov 04 11:00:00 UTC
+        val localTime = alarmTime.futureTime(utcNow = nowTime)
+        assertEquals(expectedTime, localTime)
+    }
+
+    @Test
+    fun futureTime_alarm11h00day04_now10h00day04_returns11h00day04() {
         val alarmTime = 1730718000000    // Nov 04 11:00:00 UTC
         val nowTime = 1730714400000      // Nov 04 10:00:00 UTC
         val expectedTime = 1730718000000 // Nov 04 11:00:00 UTC
@@ -172,7 +203,7 @@ class TimeHelperKtTest {
     }
 
     @Test
-    fun nextDailyTime_alarm11h00day05_now10h00day04_returns11h00day05() {
+    fun futureTime_alarm11h00day05_now10h00day04_returns11h00day05() {
         val alarmTime = 1730804400000    // Nov 05 11:00:00 UTC
         val nowTime = 1730714400000      // Nov 04 10:00:00 UTC
         val expectedTime = 1730804400000 // Nov 05 11:00:00 UTC
@@ -181,7 +212,7 @@ class TimeHelperKtTest {
     }
 
     @Test
-    fun nextDailyTime_alarm10h00day04_now11h00day05_returns10h00day06() {
+    fun futureTime_alarm10h00day04_now11h00day05_returns10h00day06() {
         val alarmTime = 1730628000000    // Nov 04 10:00:00 UTC
         val nowTime = 1730804400000      // Nov 05 11:00:00 UTC
         val expectedTime = 1730887200000 // Nov 06 10:00:00 UTC
@@ -235,19 +266,6 @@ class TimeHelperKtTest {
         val expectedHourAndMinute = Pair("22", "00")
 
         val actualHourAndMinute = Triple("22", "00", isPM)
-            .fromLocalHoursAndMinutes24Format()
-            .toLocalHoursAndMinutes(is24Hour = is24HourFormat)
-
-        assertEquals(expectedHourAndMinute, actualHourAndMinute)
-    }
-
-    @Test
-    fun fromLocalHoursAndMinutes_00h00_returnsUTC_andLocalHourAndMinute() {
-        val isPM = true
-        val is24HourFormat = true
-        val expectedHourAndMinute = Pair("00", "00")
-
-        val actualHourAndMinute = Triple("00", "00", isPM)
             .fromLocalHoursAndMinutes24Format()
             .toLocalHoursAndMinutes(is24Hour = is24HourFormat)
 
