@@ -1,5 +1,6 @@
 package com.rvcoding.snoozeloo
 
+import android.app.KeyguardManager
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
@@ -80,7 +81,11 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun setScreenAsAlarm(isTriggered: Boolean = false) {
-        if (isTriggered) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        if (isTriggered) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            val km = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
+            km.requestDismissKeyguard(this, null)
+        }
         setShowWhenLocked(isTriggered)
         setTurnScreenOn(isTriggered)
     }
