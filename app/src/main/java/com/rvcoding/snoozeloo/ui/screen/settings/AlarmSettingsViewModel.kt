@@ -15,7 +15,7 @@ import com.rvcoding.snoozeloo.domain.navigation.Actions
 import com.rvcoding.snoozeloo.domain.repository.AlarmRepository
 import com.rvcoding.snoozeloo.ui.navigation.Navigator
 import com.rvcoding.snoozeloo.ui.util.fromLocalHoursAndMinutes24Format
-import com.rvcoding.snoozeloo.ui.util.truncateToMinute
+import com.rvcoding.snoozeloo.ui.util.futureTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -91,24 +91,29 @@ class AlarmSettingsViewModel(
                     println("Saving: id=${action.alarm.id} hour=${action.alarm.time.localHours} minute=${action.alarm.time.localMinutes} meridiem=${action.alarm.time.localMeridiem}")
                     action.alarm.let {
                         if (it.id == -1) {
-                            alarmRepository.addAlarm(it.copy(
+                            // New alarm
+                            val newId = alarmRepository.addAlarm(it.copy(
                                 enabled = true,
-                                time = it.time.copy(utcTime = it.time.utcTime.truncateToMinute())
+                                time = it.time.copy(utcTime = it.time.utcTime.futureTime())
                             ))
-                        }
-                        else {
+                            alarmRepository.getAlarm(newId)?.let {
+                                scheduleAlarmAndNavigateUp(it)
+                            }
+                        } else {
+                            // Updating existing alarm
                             alarmRepository.getAlarm(action.alarm.id)?.let {
                                 alarmScheduler.cancel(it.id)
                             }
                             alarmRepository.updateAlarm(it.copy(
                                 enabled = true,
                                 name = action.alarm.name,
-                                time = it.time.copy(utcTime = it.time.utcTime.truncateToMinute())
+                                time = it.time.copy(utcTime = it.time.utcTime.futureTime())
                             ))
+                            alarmRepository.getAlarm(action.alarm.id)?.let {
+                                scheduleAlarmAndNavigateUp(it)
+                            }
                         }
                     }
-                    alarmScheduler.schedule(action.alarm)
-                    navigator.navigateUp()
                 }
                 is Actions.AlarmSettings.Load -> {
                     getAlarmBy(action.alarmId)
@@ -132,6 +137,14 @@ class AlarmSettingsViewModel(
                 }
             }
         }
+    }
+
+    suspend fun scheduleAlarmAndNavigateUp(alarm: Alarm) {
+        alarmScheduler.schedule(alarm)
+        alarmRepository.getAlarm(alarm.id)?.let {
+            println("Alarm saved: $it ") // It works! 💣💣💣
+        }
+        navigator.navigateUp()
     }
 
     companion object {

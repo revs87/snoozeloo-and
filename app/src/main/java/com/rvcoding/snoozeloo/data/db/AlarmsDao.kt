@@ -16,7 +16,7 @@ interface AlarmsDao {
     suspend fun getAlarmById(id: Int): AlarmsEntity?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertAlarm(alarm: AlarmsEntity)
+    suspend fun insertAlarm(alarm: AlarmsEntity): Long
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateAlarm(alarm: AlarmsEntity)

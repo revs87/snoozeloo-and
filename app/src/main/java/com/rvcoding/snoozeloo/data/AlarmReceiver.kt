@@ -1,8 +1,8 @@
 package com.rvcoding.snoozeloo.data
 
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.app.TaskStackBuilder
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -39,6 +39,7 @@ class AlarmReceiver : BroadcastReceiver() {
             alarmRepository.updateAlarmEnabled(alarmId, false)
             alarmRepository.getAlarm(alarmId)?.let { alarm ->
                 println("[AlarmReceiver] Alarm: $alarm")
+                context ?: println("[AlarmReceiver] Context is null")
                 context?.let {
                     val alarmTriggerIntent = Intent(context, MainActivity::class.java).apply {
                         data = android.net.Uri.parse("https://$DEEP_LINK_DOMAIN/$alarmId")
@@ -80,29 +81,14 @@ class AlarmReceiver : BroadcastReceiver() {
     ) {
         val alarmTriggerPendingIntent = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(alarmTriggerIntent)
-            getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE)
+            getPendingIntent(0, FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
         val alarmTurnOffPendingIntent = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(alarmTurnOffIntent)
-            getPendingIntent(1, PendingIntent.FLAG_IMMUTABLE)
+            getPendingIntent(1, FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
 
         context.startActivity(alarmTriggerIntent)
-
-        val channel = NotificationChannel(
-            CHANNEL_ID,
-            CHANNEL_NAME,
-            NotificationManager.IMPORTANCE_HIGH
-        ).apply {
-            setBypassDnd(true)
-            enableLights(true)
-            enableVibration(true)
-            setShowBadge(true)
-            lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
-        }
-
-        val notificationManager = context.getSystemService<NotificationManager>()!!
-        notificationManager.createNotificationChannel(channel)
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.alarm_blue)
@@ -113,6 +99,7 @@ class AlarmReceiver : BroadcastReceiver() {
             .setFullScreenIntent(alarmTriggerPendingIntent, true)
             .addAction(R.drawable.alarm_blue, context.getString(R.string.turn_off), alarmTurnOffPendingIntent)
             .build()
+        val notificationManager = context.getSystemService<NotificationManager>()!!
         notificationManager.notify(alarmId, notification)
     }
 
