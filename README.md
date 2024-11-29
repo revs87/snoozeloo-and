@@ -51,6 +51,7 @@ November of 2024.
 - Jetpack-Compose Deep Linking navigation
 - Bespoke TimeCard (copied from Material3 TimePicker's source)
 - Delete Alarm entry with a side swipe from RTL
+- 12H and 24H support
 
 ### 🗄️ Local Persistence
 
