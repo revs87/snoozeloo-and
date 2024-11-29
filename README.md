@@ -59,20 +59,9 @@ November of 2024.
 
 ### 📸 Screenshots
 
-<table width="100%">
-    <tr>
-        <td width="50%">![1_intro](https://github.com/user-attachments/assets/9ce9bffa-cf92-4ece-99e7-384f4a116707)</td>
-        <td width="50%">![2_list](https://github.com/user-attachments/assets/65859df0-f78d-46f6-b57f-03a15903851f)</td>
-    </tr>
-    <tr>
-        <td width="50%">![3_edit](https://github.com/user-attachments/assets/939b189e-ee8d-4bc2-8cab-78b23fff8e9e)</td>
-        <td width="50%">![4_new](https://github.com/user-attachments/assets/09ffcf37-f1ed-47a1-bb83-3b8781baacc3)</td>
-    </tr>
-    <tr>
-        <td width="50%">![5_time](https://github.com/user-attachments/assets/4dcdf2f3-5dcf-4f40-a219-78d7558f4f7d)</td>
-        <td width="50%">![6_trigger](https://github.com/user-attachments/assets/6b41b53e-4935-429e-b162-a6bf60a681a2)</td>
-    </tr>
-</table>
+| ![1_intro](https://github.com/user-attachments/assets/9ce9bffa-cf92-4ece-99e7-384f4a116707) | ![2_list](https://github.com/user-attachments/assets/65859df0-f78d-46f6-b57f-03a15903851f) |
+| ![3_edit](https://github.com/user-attachments/assets/939b189e-ee8d-4bc2-8cab-78b23fff8e9e) | ![4_new](https://github.com/user-attachments/assets/09ffcf37-f1ed-47a1-bb83-3b8781baacc3) |
+| ![5_time](https://github.com/user-attachments/assets/4dcdf2f3-5dcf-4f40-a219-78d7558f4f7d) | ![6_trigger](https://github.com/user-attachments/assets/6b41b53e-4935-429e-b162-a6bf60a681a2) |
 
 ### 🖧 Project structure
 
