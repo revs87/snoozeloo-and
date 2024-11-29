@@ -30,6 +30,7 @@ November of 2024.
 - Broadcast Receivers
 - Boot Receivers
 - Dynamic Permission requests for POST_NOTIFICATIONS and USE_FULL_SCREEN_INTENT
+- Unit tests applied to TimeHelper
 
 ### 🏛️ Architecture & Design Patterns
 
@@ -59,13 +60,17 @@ November of 2024.
 
 ### 📸 Screenshots
 
-| Splash                                                                                      | Alarm list                                                                                    |
-|---------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
-| ![1_intro](https://github.com/user-attachments/assets/9ce9bffa-cf92-4ece-99e7-384f4a116707) | ![2_list](https://github.com/user-attachments/assets/65859df0-f78d-46f6-b57f-03a15903851f)    |
-| Existing Alarm editing                                                                      | New alarm editing                                                                             |
-| ![3_edit](https://github.com/user-attachments/assets/939b189e-ee8d-4bc2-8cab-78b23fff8e9e)  | ![4_new](https://github.com/user-attachments/assets/09ffcf37-f1ed-47a1-bb83-3b8781baacc3)     |
-| Alarm time set                                                                              | Alarm ringing                                                                                 |
-| ![5_time](https://github.com/user-attachments/assets/4dcdf2f3-5dcf-4f40-a219-78d7558f4f7d)  | ![6_trigger](https://github.com/user-attachments/assets/6b41b53e-4935-429e-b162-a6bf60a681a2) |
+| Splash                                                                                      | Alarm List                                                                                 |
+|---------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
+| ![1_intro](https://github.com/user-attachments/assets/9ce9bffa-cf92-4ece-99e7-384f4a116707) | ![2_list](https://github.com/user-attachments/assets/65859df0-f78d-46f6-b57f-03a15903851f) |
+
+| Existing Alarm Editing                                                                     | New Alarm Rditing                                                                         |
+|--------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| ![3_edit](https://github.com/user-attachments/assets/939b189e-ee8d-4bc2-8cab-78b23fff8e9e) | ![4_new](https://github.com/user-attachments/assets/09ffcf37-f1ed-47a1-bb83-3b8781baacc3) |
+
+| Alarm Time Setting                                                                         | Alarm Ringing                                                                                 |
+|--------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| ![5_time](https://github.com/user-attachments/assets/4dcdf2f3-5dcf-4f40-a219-78d7558f4f7d) | ![6_trigger](https://github.com/user-attachments/assets/6b41b53e-4935-429e-b162-a6bf60a681a2) |
 
 ### 🖧 Project structure
 
