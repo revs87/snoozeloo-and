@@ -55,7 +55,7 @@ November of 2024.
 
 ### 🗄️ Local Persistence
 
-- SavedStateHandle persistency for the Alarm editing
+- SavedStateHandle persistence for the Alarm editing
 - Room DB (on KSP)
 
 ## 🎨 Design
