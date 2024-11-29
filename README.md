@@ -50,6 +50,7 @@ November of 2024.
 - Jetpack-Compose No-type Args navigation
 - Jetpack-Compose Deep Linking navigation
 - Bespoke TimeCard (copied from Material3 TimePicker's source)
+- Delete Alarm entry with a side swipe from RTL
 
 ### 🗄️ Local Persistence
 
