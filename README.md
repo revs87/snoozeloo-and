@@ -27,10 +27,11 @@ November of 2024.
 - 100% Kotlin
 - 100% Jetpack Compose
 - Kotlin Coroutines and Flows
-- Push Notifications
 - Broadcast Receivers
-- Boot Receivers
-- Dynamic Permission requests for POST_NOTIFICATIONS and USE_FULL_SCREEN_INTENT
+- Boot Broadcast Receivers
+- AlarmManager: precise scheduling for Alarm tasks
+- Push Notifications
+- Dynamic Permissions handling: POST_NOTIFICATIONS and USE_FULL_SCREEN_INTENT
 - Unit tests applied to TimeHelper
 
 ### 🏛️ Architecture & Design Patterns
@@ -48,8 +49,8 @@ November of 2024.
 ### 📲 UI
 
 - Dark mode supported
-- Jetpack-Compose No-type Args navigation
-- Jetpack-Compose Deep Linking navigation
+- Jetpack Compose No-type Args navigation
+- Jetpack Compose Deep Linking navigation
 - Bespoke TimeCard (copied from Material3 TimePicker's source)
 - Delete Alarm entry with a side swipe from RTL
 - 12H and 24H support
