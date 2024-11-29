@@ -14,7 +14,7 @@
 This is a modern Alarm clock Android Native application called ⏰ Snoozeloo.
 The development of this app was motivated and was part of the [Mobile Dev Campus Monthly Challenge](https://pl-coding.com/campus/) by Philipp Lackner for November of 2024.
 
-### 📌 Features
+## 📌 Features
 
 - Creation and editing multiple alarm entries.
 - Killing the app does not stop alarm triggering.
