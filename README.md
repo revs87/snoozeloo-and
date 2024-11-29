@@ -80,9 +80,8 @@ ui/
 
 ### ☑ Project Requirements
 
-Java 17+
-
-The latest Android Studio Hedgehog or above (for easy install use JetBrains Toolbox)
+- Java 17+
+- The latest Android Studio Hedgehog or above (for easy install use JetBrains Toolbox)
 
 ### ⚙️ Configuration
 
