@@ -21,6 +21,47 @@ The development of this app was motivated and was part of the [Mobile Dev Campus
 - Rebooting the Android device does not stop alarm triggering.
 - Dark mode supported.
 
+### 🚀 Technical Highlights
+
+- Android Native
+- 100% Kotlin
+- 100% Jetpack Compose
+- Kotlin Coroutines and Flows
+- Push Notifications
+- Broadcast Receivers
+- Boot Receivers
+- Dynamic Permission requests for POST_NOTIFICATIONS and USE_FULL_SCREEN_INTENT
+
+### 🏛️ Architecture & Design Patterns
+
+- Single module architecture
+- Single Activity architecture
+- MVVM presentation pattern with UI States when editing an Alarm
+- MVI unidirectional data flow from Actions to State
+- Sealed interfaces for Actions and Destinations files
+- Dependency Injection applied with Koin
+- Dependency Inversion Principle (DIP) from data to presentation layers
+- Single Source of Truth in a Room database
+- Reactive Navigation (Flow listening)
+
+### 📲 UI
+
+- Dark mode supported
+- Jetpack-Compose No-type Args navigation
+- Jetpack-Compose Deep Linking navigation
+- Bespoke TimeCard (copied from Material3 TimePicker's source)
+
+### 🗄️ Local Persistence
+
+- SavedStateHandle persistency for the Alarm editing
+- Room DB (on KSP)
+
+
+## 🎨 Design
+
+### 📸 Screenshots
+
+
 ### 🖧 Project structure
 
 This project is structured in a single module divided by the following 5 packages:
@@ -35,48 +76,6 @@ domain/
 
 ui/
 
-### 🚀 Technical Highlights
-
-- Android Native
-- 100% Kotlin
-- 100% Jetpack Compose
-- Kotlin Coroutines and Flows
-- Push Notifications
-- Broadcast Receivers
-- Boot Receivers
-- Dynamic Permission requests for POST_NOTIFICATIONS and USE_FULL_SCREEN_INTENT
-
-#### 🏛️ Architecture & Design Patterns
-
-- Single module architecture
-- Single Activity architecture
-- MVVM presentation pattern with UI States when editing an Alarm
-- MVI unidirectional data flow from Actions to State
-- Sealed interfaces for Actions and Destinations files
-- Dependency Injection applied with Koin
-- Dependency Inversion Principle (DIP) from data to presentation layers
-- Single Source of Truth in a Room database
-- Reactive Navigation (Flow listening)
-
-#### 📲 UI
-
-- Dark mode supported
-- Jetpack-Compose No-type Args navigation
-- Jetpack-Compose Deep Linking navigation
-- Bespoke TimeCard (copied from Material3 TimePicker's source)
-
-#### 🗄️ Local Persistence
-
-- SavedStateHandle persistency for the Alarm editing
-- Room DB (on KSP)
-
-
-## 🎨 Design
-
-### 📸 Screenshots
-
-
-
 ## 🕹️ Usage
 
 ### ☑ Project Requirements
@@ -88,6 +87,11 @@ The latest Android Studio Hedgehog or above (for easy install use JetBrains Tool
 ### ⚙️ Configuration
 
 Run ./gradlew build
+
+
+## 🧾 License
+
+Check LICENSE.md from the project.
 
 
 ## 🤝 Contributing
