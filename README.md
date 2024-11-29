@@ -15,9 +15,10 @@ November of 2024.
 
 ## 📌 Features
 
-- Creation and editing multiple alarm entries.
+- Creation and Edit of multiple One-time alarm entries.
 - Killing the app does not stop alarm triggering.
 - Rebooting the Android device does not stop alarm triggering.
+- Bedtime recommendations for optimal sleep
 - Dark mode supported.
 
 ### 🚀 Technical Highlights
