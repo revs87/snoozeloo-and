@@ -97,7 +97,7 @@ Run ./gradlew build
 
 ## 🧾 License
 
-Check LICENSE.md from the project.
+Check LICENSE from the project.
 
 ## 🤝 Contributing
 
