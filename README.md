@@ -90,7 +90,10 @@ ui/
 ### ☑ Project Requirements
 
 - Java 17+
-- The latest Android Studio Hedgehog or above (for easy install use JetBrains Toolbox)
+- The latest Android Studio Ladybug or above (for easy install use JetBrains Toolbox)
+- Minimum SDK: 28 (Android 9)
+- Target SDK: 35 (Android 15)
+- Kotlin 2.0.21
 
 ### ⚙️ Configuration
 
