@@ -26,9 +26,13 @@ The development of this app was motivated and was part of the [Mobile Dev Campus
 This project is structured in a single module divided by the following 5 packages:
 
 common/
+
 data/
+
 di/
+
 domain/
+
 ui/
 
 ### 🚀 Technical Highlights
